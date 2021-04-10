@@ -15,7 +15,7 @@ def process_file(paths, chord_duration):
 
 
 def main():
-    chord_duration = int(sys.argv[1])
+    chord_duration = float(sys.argv[1])
 
     if len(sys.argv) == 3:
         filename = sys.argv[2]
