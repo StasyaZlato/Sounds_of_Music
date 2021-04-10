@@ -1,19 +1,20 @@
 package controllers;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class GeneralStatisticsController {
     @FXML TableView frequencyTable;
-//    ObservableList<String> loadedFiles = FXCollections.observableArrayList();
-
 
     public void initialize() {
-        //files.setItems(loadedFiles);
-        System.out.println("initialize called");
+        frequencyTable.columnResizePolicyProperty();
+        ObservableList<TableColumn> columns = frequencyTable.getColumns();
+        columns.get(0).prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
+        columns.get(1).prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
+
+        columns.get(0).setResizable(false);
+        columns.get(1).setResizable(false);
     }
 }
