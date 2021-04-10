@@ -6,10 +6,16 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="controllers.GeneralStatisticsController"
-          prefHeight="400.0" prefWidth="600.0">
+<?import javafx.stage.Screen?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.GeneralStatisticsController"
+      prefHeight="400.0" prefWidth="600.0">
+
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen" />
+    </fx:define>
+
     <Label fx:id="description" text="Very clever text describing what is happenning on this tab"
            GridPane.rowIndex="0" GridPane.columnIndex="0">
         <padding>
@@ -17,8 +23,7 @@
         </padding>
     </Label>
 
-    <TableView fx:id="frequencyTable"
-               GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" prefWidth="400.0">
+    <TableView fx:id="frequencyTable" prefHeight="${screen.visualBounds.height}">
         <columns>
             <TableColumn text="Chord" fx:id="chord"/>
             <TableColumn text="Frequency" fx:id="frequency"/>
@@ -26,4 +31,4 @@
     </TableView>
     <ImageView fx:id="graph" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
 
-</GridPane>
+</VBox>
