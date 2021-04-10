@@ -3,6 +3,7 @@ import numpy as np
 import neural_network
 from constants import CHORDS_DICT, CHORDS_DICT_REVERSED
 from json import JSONEncoder
+from fourier import get_chord
 
 
 class Composition:
@@ -42,10 +43,22 @@ class Composition:
 
         self.chords = list(map(lambda x: CompositionChord(self.chord_duration, CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
 
+    def get_chords_with_fourier(self):
+      chords_from_fourier = []
+      for sample in self.chords_librosa:
+          next_chord = get_chord(sample, self.sr)
+          if next_chord != 'error':
+              chords_from_fourier.append(next_chord)
+      self.chords = list(map(lambda x: CompositionChord(self.chord_duration, x), chords_from_fourier))
+
     def process_composition_ann(self):
         self.stream()
         self.get_features()
         self.get_chords_with_ann()
+
+    def process_composition_fourier(self):
+        self.stream()
+        self.get_chords_with_fourier()
 
     class CompositionEncoder(JSONEncoder):
         def default(self, o):
