@@ -5,10 +5,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import java.net.URL?>
+<?import javafx.stage.Screen?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.ChooseFilesController"
             prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #eaeaea;">
+
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen" />
+    </fx:define>
 
     <top>
     <Label BorderPane.alignment="CENTER_LEFT">
@@ -27,12 +32,12 @@
             Выберите файлы для обработки
         </Button>
         <HBox alignment="CENTER">
-            <CheckBox fx:id="fourier" text="Использовать преобразование Фурье">
+            <CheckBox fx:id="fourier" selected="true" onAction="#fourierCheckBoxHandler" text="Использовать преобразование Фурье">
                 <padding>
                     <Insets top="10" right="20" bottom="10" left="10" />
                 </padding>
             </CheckBox>
-            <CheckBox fx:id="ann" text="Использовать искусственную нейросеть">
+            <CheckBox fx:id="ann" onAction="#annCheckBoxHandler" text="Использовать искусственную нейросеть">
                 <padding>
                     <Insets top="10" right="20" bottom="10" left="20" />
                 </padding>
@@ -46,8 +51,8 @@
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20" />
             </padding>
-            <ScrollPane fx:id="scrollFiles" prefWidth="600" managed="false">
-                <ListView fx:id="filesChosenLst" prefWidth="600"/>
+            <ScrollPane fx:id="scrollFiles" prefWidth="${screen.visualBounds.width}" prefHeight="100" managed="false">
+                <ListView fx:id="filesChosenLst" prefWidth="${screen.visualBounds.width}" prefHeight="100"/>
             </ScrollPane>
 
             <Button styleClass="active" onMouseClicked="#proceed">
