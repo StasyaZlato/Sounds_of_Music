@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -23,6 +20,8 @@ public class ChooseFilesController {
 
     public ListView filesChosenLst;
     public ScrollPane scrollFiles;
+    public CheckBox fourier;
+    public CheckBox ann;
     ObservableList<String> chosenFiles = FXCollections.observableArrayList();
 
     public void openFilePicker(ActionEvent actionEvent) {
@@ -40,17 +39,18 @@ public class ChooseFilesController {
 
             filesChosenLst.setItems(chosenFiles);
             scrollFiles.setManaged(true);
-//            filesChosenLst.setCellFactory(new Callback<ListView<String>, ListCell<String>>()
-//            {
-//                @Override
-//                public ListCell<String> call(ListView<String> listView)
-//                {
-//                    return new ListViewCell();
-//                }
-//            });
         }
     }
 
     public void proceed(MouseEvent mouseEvent) {
+        Stage newWindow = new Stage();
+    }
+
+    public void fourierCheckBoxHandler(ActionEvent actionEvent) {
+        ann.selectedProperty().setValue(!ann.isSelected());
+    }
+
+    public void annCheckBoxHandler(ActionEvent actionEvent) {
+        fourier.selectedProperty().setValue(!fourier.isSelected());
     }
 }
