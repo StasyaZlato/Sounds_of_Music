@@ -3,10 +3,10 @@ from composition import Composition
 import json
 
 
-def process_file(paths):
+def process_file(paths, chord_duration):
     compositions = []
     for path in paths:
-        composition = Composition(path)
+        composition = Composition(path, chord_duration)
         composition.process_composition_ann()
         compositions.append(composition)
 
@@ -15,12 +15,14 @@ def process_file(paths):
 
 
 def main():
-    if len(sys.argv) == 2:
-        filename = sys.argv[1]
-        process_file([filename])
+    chord_duration = int(sys.argv[1])
+
+    if len(sys.argv) == 3:
+        filename = sys.argv[2]
+        process_file([filename], chord_duration)
     else:
-        filenames = sys.argv[1:]
-        process_file(filenames)
+        filenames = sys.argv[2:]
+        process_file(filenames, chord_duration)
 
 
 if __name__ == "__main__":

@@ -16,34 +16,45 @@
     </fx:define>
 
     <top>
-    <Label BorderPane.alignment="CENTER_LEFT">
-        <padding>
-            <Insets top="10" right="10" bottom="10" left="10" />
-        </padding>
-        Very clever text describing what the hell is happening here. </Label>
+        <Label BorderPane.alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            Very clever text describing what the hell is happening here. </Label>
     </top>
 
     <center>
-    <VBox prefWidth="600" prefHeight="400" alignment="CENTER">
-        <Button onAction="#openFilePicker" styleClass="active">
-            <padding>
-                <Insets top="15" right="15" bottom="15" left="15" />
-            </padding>
-            Выберите файлы для обработки
-        </Button>
-        <HBox alignment="CENTER">
-            <CheckBox fx:id="fourier" selected="true" onAction="#fourierCheckBoxHandler" text="Использовать преобразование Фурье">
+        <VBox prefWidth="600" prefHeight="400" alignment="CENTER">
+            <Button onAction="#openFilePicker" styleClass="active">
                 <padding>
-                    <Insets top="10" right="20" bottom="10" left="10" />
+                    <Insets top="15" right="15" bottom="15" left="15" />
                 </padding>
-            </CheckBox>
-            <CheckBox fx:id="ann" onAction="#annCheckBoxHandler" text="Использовать искусственную нейросеть">
-                <padding>
-                    <Insets top="10" right="20" bottom="10" left="20" />
-                </padding>
-            </CheckBox>
-        </HBox>
-    </VBox>
+                Выберите файлы для обработки
+            </Button>
+            <HBox alignment="CENTER">
+                <CheckBox fx:id="fourier" selected="true" onAction="#fourierCheckBoxHandler" text="Использовать преобразование Фурье">
+                    <padding>
+                        <Insets top="10" right="20" bottom="10" left="10" />
+                    </padding>
+                </CheckBox>
+                <CheckBox fx:id="ann" onAction="#annCheckBoxHandler" text="Использовать искусственную нейросеть">
+                    <padding>
+                        <Insets top="10" right="20" bottom="10" left="20" />
+                    </padding>
+                </CheckBox>
+            </HBox>
+            <Label fx:id="lbl" text="Выберите длительность звучания одного аккорда в аудиозаписи (в секундах): "/>
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.0" prefWidth="100.0"/>
+                </columnConstraints>
+                <Slider GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="chordDurationSlider" min="0.5" max="3.5"
+                        majorTickUnit="1.5f" minorTickCount="2" snapToTicks="true" showTickLabels="true"
+                        showTickMarks="true" blockIncrement="0.5" value="2"/>
+            </GridPane>
+        </VBox>
     </center>
 
     <bottom>
@@ -55,7 +66,7 @@
                 <ListView fx:id="filesChosenLst" prefWidth="${screen.visualBounds.width}" prefHeight="100"/>
             </ScrollPane>
 
-            <Button styleClass="active" onMouseClicked="#proceed">
+            <Button styleClass="active" fx:id="proceedBtn" onMouseClicked="#proceed">
                 <padding>
                     <Insets top="15" right="15" bottom="15" left="15" />
                 </padding>

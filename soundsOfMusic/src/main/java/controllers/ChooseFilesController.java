@@ -1,16 +1,15 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +21,16 @@ public class ChooseFilesController {
     public ScrollPane scrollFiles;
     public CheckBox fourier;
     public CheckBox ann;
+    public Label lbl;
+    public Slider chordDurationSlider;
+    public Button proceedBtn;
     ObservableList<String> chosenFiles = FXCollections.observableArrayList();
+
+    BooleanBinding booleanBind;
+
+    public void initialize() {
+        proceedBtn.disableProperty().bind(Bindings.size(chosenFiles).lessThan(1));
+    }
 
     public void openFilePicker(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -43,7 +51,6 @@ public class ChooseFilesController {
     }
 
     public void proceed(MouseEvent mouseEvent) {
-        Stage newWindow = new Stage();
     }
 
     public void fourierCheckBoxHandler(ActionEvent actionEvent) {
