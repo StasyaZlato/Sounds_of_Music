@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.stage.Screen?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="800" prefWidth="1200"
+            fx:controller="controllers.MainMenuController">
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen" />
+    </fx:define>
+    <left>
+        <VBox spacing="2" alignment="BOTTOM_CENTER">
+            <Button styleClass="passive" fx:id="infoTab" prefHeight="100" prefWidth="300" text="Общая статистика"
+                    onMouseClicked="#openNextTab"/>
+            <Button styleClass="passive" fx:id="tonnetzTab" prefHeight="100" prefWidth="300" text="Диаграмма Тоннец"
+                    onMouseClicked="#openNextTab"/>
+            <Button styleClass="passive" fx:id="tdaTab" prefHeight="100" prefWidth="300" text="ТАД анализ"
+                    onMouseClicked="#openNextTab"/>
+        </VBox>
+    </left>
+    <right>
+        <HBox>
+            <Button fx:id="scrollPaneEnableBtn" prefWidth="10" onMouseClicked="#manageListView" styleClass="helper">
+                <graphic>
+                    <ImageView fitWidth="10" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/left-arrow-white.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <ScrollPane fx:id="scrollFiles" prefWidth="400" prefHeight="${screen.visualBounds.height}" managed="false">
+                <ListView fx:id="files" prefWidth="400" prefHeight="${screen.visualBounds.height}"/>
+            </ScrollPane>
+        </HBox>
+    </right>
+    <center>
+        <fx:include source="general_statistics.fxml"/>
+    </center>
+    <stylesheets>
+        <URL value="@../styles/fontstyle.css"/>
+        <URL value="@../styles/buttons.css"/>
+        <URL value="@../styles/borderPane.css"/>
+    </stylesheets>
+</BorderPane>

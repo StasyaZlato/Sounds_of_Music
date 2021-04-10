@@ -10,3 +10,7 @@
 .button.passive {
     -fx-background-color: #000000;
 }
+
+.button.helper {
+    -fx-background-color: #666666;
+}

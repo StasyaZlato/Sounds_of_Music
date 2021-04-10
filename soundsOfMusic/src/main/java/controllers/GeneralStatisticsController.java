@@ -8,19 +8,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 
 public class GeneralStatisticsController {
-    @FXML ListView files; // ?
     @FXML TableView frequencyTable;
+//    ObservableList<String> loadedFiles = FXCollections.observableArrayList();
 
-    @FXML ScrollPane scrollFiles;
-    ObservableList<String> loadedFiles = FXCollections.observableArrayList();
-
-    public void setFilesList(ObservableList<String> filesLst) {
-        loadedFiles = filesLst;
-        files.setItems(loadedFiles);
-        scrollFiles.setManaged(true);
-        System.out.println("setFilesList called");
-        System.out.println("files length is " + filesLst.size());
-    }
 
     public void initialize() {
         //files.setItems(loadedFiles);

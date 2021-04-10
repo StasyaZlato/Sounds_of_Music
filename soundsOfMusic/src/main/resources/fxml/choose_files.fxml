@@ -76,6 +76,6 @@
     </bottom>
 
     <stylesheets>
-        <URL value="@../buttons.css"/>
+        <URL value="@../styles/buttons.css"/>
     </stylesheets>
 </BorderPane>

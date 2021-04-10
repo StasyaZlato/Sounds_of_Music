@@ -60,10 +60,10 @@ public class ChooseFilesController {
         stage.close();
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/general_statistics.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
             Parent root = loader.load();
 
-            GeneralStatisticsController controller = loader.getController();
+            MainMenuController controller = loader.getController();
             controller.setFilesList(chosenFiles);
 
             Scene scene = new Scene(root);

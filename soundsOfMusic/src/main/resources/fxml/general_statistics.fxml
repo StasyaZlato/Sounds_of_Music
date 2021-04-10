@@ -23,11 +23,6 @@
         </columns>
     </TableView>
 
-    <ScrollPane fx:id="scrollFiles" prefWidth="600" managed="false"
-        GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.rowSpan="2">
-        <ListView fx:id="files" prefWidth="600"/>
-    </ScrollPane>
-
     <ImageView fx:id="graph" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
 
 </GridPane>
