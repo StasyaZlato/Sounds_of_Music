@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('fonts/Raleway-Light.ttf');
+}
+
+
+.label.small {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 14;
+}
+
+.label {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 20;
+}
+
+.axis-label {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 12;
+}
+
+
+.button .text {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 20;
+}
+
+.text-blue {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 20;
+    -fx-fill: #0097a7;
+}
+
+.text-blue-small {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 14;
+    -fx-fill: #0097a7;
+}
+
+.text-ordinary {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 20;
+    -fx-fill: -fx-text-background-color;
+}
+
+.text-ordinary-small {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 14;
+    -fx-fill: -fx-text-background-color;
+}
+
+.titled-pane {
+    -fx-font-family: 'Raleway';
+    -fx-font-size: 14;
+    -fx-text-fill: white;
+}
+
