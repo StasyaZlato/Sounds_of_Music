@@ -7,24 +7,24 @@ import sys
 
 from pydub import AudioSegment
 from pydub.utils import make_chunks
-from constants import freq_table, notes_labels, notes, octaves, max_freq
+from constants import FREQ_TABLE, NOTES_LABELS, NOTES, OCTAVES, MAX_FREQ
 
 def get_err_margins():
     err_margins = [0, 1]
     curr_margin = 2
-    for _ in range(octaves - 2):
+    for _ in range(OCTAVES - 2):
         err_margins.append(curr_margin)
         curr_margin *= 2
     return err_margins
 
 def frequency_to_note(freq):
     err_margins = get_err_margins()
-    if freq < 0 or freq > max_freq:
+    if freq < 0 or freq > MAX_FREQ:
         return 'invalid'
-    for i in range(notes):
-        for j in range(octaves):
-            if abs(freq - freq_table[i][j]) <= err_margins[j]:
-                return notes_labels[i] + str(j)
+    for i in range(NOTES):
+        for j in range(OCTAVES):
+            if abs(freq - FREQ_TABLE[i][j]) <= err_margins[j]:
+                return NOTES_LABELS[i] + str(j)
     return 'unknown'
     
 def are_adjacent_notes(first, second):
@@ -83,8 +83,8 @@ def get_notes(freqs):
     return notes
     
 def determine_third(root, third):
-    root_i = notes_labels.index(root)
-    third_i = notes_labels.index(third)
+    root_i = NOTES_LABELS.index(root)
+    third_i = NOTES_LABELS.index(third)
     diff = third_i - root_i
     if diff == 4 or diff == -8:
         return 'major'
@@ -93,8 +93,8 @@ def determine_third(root, third):
     return '!! error !!'
     
 def determine_fifth(root, fifth):
-    root_i = notes_labels.index(root)
-    fifth_i = notes_labels.index(fifth)
+    root_i = NOTES_LABELS.index(root)
+    fifth_i = NOTES_LABELS.index(fifth)
     diff = fifth_i - root_i
     if diff == 7 or diff == -5:
         return 'perfect'
