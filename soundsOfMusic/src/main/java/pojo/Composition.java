@@ -89,7 +89,7 @@ class CompositionDeserializer extends StdDeserializer<Composition> {
 
         JsonNode chordsNode = compositionNode.get("chords");
         for (var el: chordsNode) {
-            chords.add(new CompositionChord(el.get("duration").doubleValue(), el.get("chord").textValue()));
+            chords.add(new CompositionChord(el.get("frequency").doubleValue(), el.get("chord").textValue()));
         }
 
         composition.setChords(chords);

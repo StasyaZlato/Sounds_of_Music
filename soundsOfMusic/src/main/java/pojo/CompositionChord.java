@@ -1,13 +1,13 @@
 package pojo;
 
 public class CompositionChord {
-    public final double duration;
+    public final double frequency;
     public final String chord;
 
     public CompositionChord(
-            double duration,
+            double frequency,
             String chord) {
-        this.duration = duration;
+        this.frequency = frequency;
         this.chord = chord;
     }
 }
