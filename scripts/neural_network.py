@@ -1,15 +1,16 @@
+import json
 from os import walk
-from tqdm import tqdm, trange
+
 import librosa
 import numpy as np
-from dataset_entity import DatasetEntity
-from torch import nn
 import torch
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from constants import CHORDS_DICT
+from sklearn.model_selection import train_test_split
+from torch import nn
+from tqdm import tqdm, trange
 
-import json
+from constants import CHORDS_DICT
+from dataset_entity import DatasetEntity
 
 
 def get_folders(path):
@@ -146,22 +147,22 @@ def fit_model(model, criterion, optimizer, X_train, y_train, batch_size):
         torch.save(model.state_dict(), "resources/ann_model")
 
 
-def load_model():
+def load_model(path_to_model):
     model = create_model()[0]
-    model.load_state_dict(torch.load("resources/ann_model"))
+    model.load_state_dict(torch.load(path_to_model))
     model.eval()
     return model
 
 
 def test_model(X_test, y_test):
-    model = load_model()
+    model = load_model("resources/ann_model")
 
     predicted_test = torch.argmax(model(X_test), dim=1)
     print("accuracy test {}".format(accuracy_score(y_test, predicted_test)))
 
 
-def predict_chords(X):
-    model = load_model()
+def predict_chords(X, path_to_model):
+    model = load_model(path_to_model)
     return torch.argmax(model(torch.tensor(X)), dim=1)
 
 

@@ -1,27 +1,30 @@
-import sys
-from composition import Composition
 import json
+import sys
+
+from composition import Composition
 
 
 def process_file(paths, chord_duration):
     compositions = []
     for path in paths:
         composition = Composition(path, chord_duration)
-        composition.process_composition_ann()
+        composition.process_composition_fourier()
         compositions.append(composition)
 
-    with open("answer.json", 'w', encoding='utf-8') as f:
+    with open("answer_fourier.json", 'w', encoding='utf-8') as f:
         json.dump(compositions, f, ensure_ascii=False, indent=3, cls=Composition.CompositionEncoder)
 
 
 def main():
-    chord_duration = float(sys.argv[1])
+    args = sys.argv[1].split()
 
-    if len(sys.argv) == 3:
-        filename = sys.argv[2]
+    chord_duration = float(args[0])
+
+    if len(args) == 2:
+        filename = args[1]
         process_file([filename], chord_duration)
     else:
-        filenames = sys.argv[2:]
+        filenames = args[1:]
         process_file(filenames, chord_duration)
 
 
