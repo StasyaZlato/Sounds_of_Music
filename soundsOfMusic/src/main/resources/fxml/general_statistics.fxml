@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-
-<?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <?import javafx.stage.Screen?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
       fx:controller="controllers.GeneralStatisticsController"
       prefHeight="400.0" prefWidth="600.0">
 
     <fx:define>
-        <Screen fx:factory="getPrimary" fx:id="screen" />
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
 
     <Label fx:id="description" text="Very clever text describing what is happenning on this tab"
@@ -25,8 +26,8 @@
 
     <TableView fx:id="frequencyTable" prefHeight="${screen.visualBounds.height}">
         <columns>
-            <TableColumn text="Chord" fx:id="chord"/>
-            <TableColumn text="Frequency" fx:id="frequency"/>
+            <TableColumn text="Chord" fx:id="chordColumn"/>
+            <TableColumn text="Frequency" fx:id="frequencyColumn"/>
         </columns>
     </TableView>
     <ImageView fx:id="graph" GridPane.rowIndex="2" GridPane.columnIndex="0"/>

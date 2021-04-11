@@ -1,6 +1,7 @@
-import sys
-from composition import Composition
 import json
+import sys
+
+from composition import Composition
 from create_graphics import librosa_make_graphics
 
 
