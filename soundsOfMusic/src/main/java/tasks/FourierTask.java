@@ -13,7 +13,7 @@ public class FourierTask extends BasePreprocessingTask {
     }
 
     @Override
-    CompositionsResponse executeScriptWithResponse() throws IOException, InterruptedException {
+    CompositionsResponse executeScriptWithResponse() throws Exception {
         StringBuilder args = new StringBuilder()
                 .append(chordDuration).append(" ")
                 .append(String.join(" ", paths));

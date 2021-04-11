@@ -14,7 +14,7 @@ public class AnnTask extends BasePreprocessingTask {
     }
 
     @Override
-    CompositionsResponse executeScriptWithResponse() throws IOException, InterruptedException {
+    CompositionsResponse executeScriptWithResponse() throws Exception {
         Path pathToModel = Paths.get("../scripts/resources/ann_model").toAbsolutePath();
 
         StringBuilder args = new StringBuilder()
