@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -16,10 +17,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import pojo.CompositionChord;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.net.URI;
 import java.util.List;
 
 public class MainMenuController {
@@ -48,16 +50,17 @@ public class MainMenuController {
         files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             String selectedFile = files.getSelectionModel().getSelectedItem();
             int id = files.getSelectionModel().getSelectedIndex();
-
+            String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
+            Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
             if (current == 0) {
                 GeneralStatisticsController.rows.clear();
 
                 List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
                 GeneralStatisticsController.rows.addAll(data);
-            } else if (current == 1) {
-                String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
-                Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
 
+                Path histogramPath = Path.of(folderPath.toString(), "histogram.png").toAbsolutePath();
+                GeneralStatisticsController.pathToHistogram.set(histogramPath.toString());
+            } else if (current == 1) {
                 Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
                 Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
 
@@ -91,8 +94,6 @@ public class MainMenuController {
         loadedFiles = filesLst;
         files.setItems(loadedFiles);
         scrollFiles.setManaged(true);
-        System.out.println("setFilesList called");
-        System.out.println("files length is " + filesLst.size());
     }
 
     public void openNextTab(MouseEvent mouseEvent) throws IOException {
@@ -170,9 +171,11 @@ public class MainMenuController {
 
         if (scrollFiles.isManaged()) {
             GeneralGraphsController.maxWidth.set(500);
+            GeneralStatisticsController.maxWidth.set(500);
         }
         else {
             GeneralGraphsController.maxWidth.set(900);
+            GeneralStatisticsController.maxWidth.set(900);
         }
     }
 }
