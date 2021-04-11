@@ -17,6 +17,9 @@ import javafx.scene.layout.VBox;
 import pojo.CompositionChord;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainMenuController {
@@ -46,10 +49,21 @@ public class MainMenuController {
             String selectedFile = files.getSelectionModel().getSelectedItem();
             int id = files.getSelectionModel().getSelectedIndex();
 
-            GeneralStatisticsController.rows.clear();
+            if (current == 0) {
+                GeneralStatisticsController.rows.clear();
 
-            List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
-            GeneralStatisticsController.rows.addAll(data);
+                List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
+                GeneralStatisticsController.rows.addAll(data);
+            } else if (current == 1) {
+                String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
+                Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
+
+                Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
+                Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
+
+                GeneralGraphsController.pathToChromagram.set(chromagramPath.toString());
+                GeneralGraphsController.pathToWaveplot.set(waveplotPath.toString());
+            }
         });
 
         try {
@@ -58,10 +72,19 @@ public class MainMenuController {
             tonnetzScene = FXMLLoader.load(getClass().getResource("/fxml/tonnetz_results.fxml"));
             tdaScene = FXMLLoader.load(getClass().getResource("/fxml/tda_results.fxml"));
         } catch (IOException ex) {
+            ex.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Произошла ошибка во время загрузки сцены! Возможно, архив " +
                     "приложения был поврежден.");
             alert.show();
         }
+    }
+
+    public String getFileNameWithoutExtension(String path) {
+        String fileName = Paths.get(path).getFileName().toString();
+
+        String[] parts = fileName.split("\\.");
+
+        return parts[0];
     }
 
     public void setFilesList(ObservableList<String> filesLst) {
@@ -144,5 +167,12 @@ public class MainMenuController {
         scrollPaneEnableBtn.setGraphic(img);
 
         scrollFiles.setManaged(!scrollFiles.isManaged());
+
+        if (scrollFiles.isManaged()) {
+            GeneralGraphsController.maxWidth.set(500);
+        }
+        else {
+            GeneralGraphsController.maxWidth.set(900);
+        }
     }
 }

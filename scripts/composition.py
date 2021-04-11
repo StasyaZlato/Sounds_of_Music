@@ -10,6 +10,7 @@ from fourier import get_chord
 from torch import is_tensor
 from matplotlib import pyplot as plt
 import os
+from pathlib import Path
 
 
 def get_frequency(collection, is_fourier):
@@ -96,7 +97,8 @@ class Composition:
         dirname = self.get_file_name_from_path()
         print(dirname)
         try:
-            os.mkdir(dirname)
+            Path("generated_images/").mkdir(parents=True, exist_ok=True)
+            Path(dirname).mkdir(parents=True, exist_ok=True)
         except OSError:
             print("Creation of the directory %s failed" % dirname)
         else:
@@ -127,7 +129,12 @@ class Composition:
     def plot_histogram(self, frequencies):
         dirname = self.get_file_name_from_path()
         plt.figure(figsize=(14, 5))
-        plt.bar(frequencies.keys(), frequencies.values())
+
+        dict_items = frequencies.items()
+        dict_keys = list(map(lambda item: item[0], dict_items))
+        dict_values = list(map(lambda item: item[1], dict_items))
+
+        plt.bar(dict_keys, dict_values)
         res_file = os.path.join(dirname, "histogram.png")
         plt.savefig(res_file)
 
