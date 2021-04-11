@@ -24,7 +24,7 @@ public abstract class BasePreprocessingTask extends Task<CompositionsResponse> {
         return executeScriptWithResponse();
     }
 
-    abstract CompositionsResponse executeScriptWithResponse() throws IOException, InterruptedException;
+    abstract CompositionsResponse executeScriptWithResponse() throws Exception;
 
     CompositionsResponse parseJson(String path) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
