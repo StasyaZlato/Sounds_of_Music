@@ -8,6 +8,7 @@ def get_file_name_from_path(filepath):
     index = tail.index('.')
     return tail[:index]
 
+
 def librosa_make_graphics(audio_path):
     dirname = get_file_name_from_path(audio_path)
     print(dirname)
