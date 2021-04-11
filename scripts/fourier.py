@@ -31,8 +31,8 @@ def are_adjacent_notes(first, second):
         first = first[:-1]
     if len(second) > 1:
         second = second[:-1]
-    return abs(ord(first) - ord(second)) == 1 or first == 'A' and second == 'G' or \
-        first == 'G' and second == 'A' or first == second
+    return abs(ord(first) - ord(second)) == 1 or first == 'a' and second == 'g' or \
+        first == 'g' and second == 'a' or first == second
 
 
 def check_chord_valid(chord, note_to_add):
@@ -120,25 +120,12 @@ def determine_chord(notes):
         notes.insert(0, tmp)
     root_note = notes[0]
     # figure out interval for major/minor/etc
-    fifth = determine_fifth(notes[0], notes[2])
+    # fifth = determine_fifth(notes[0], notes[2])
     third = determine_third(notes[0], notes[1])
-    if fifth == 'perfect':
-        if third == 'major':
-            return root_note
-        elif third == 'minor':
-            return root_note + 'm'
-        else:
-            return 'error'
-    elif fifth == 'aug':
-        if third == 'major':
-            return root_note + fifth
-        else:
-            return 'error'
-    elif fifth == 'dim':
-        if third == 'minor':
-            return root_note + fifth
-        else:
-            return 'error'
+    if third == 'major':
+        return root_note
+    elif third == 'minor':
+        return root_note + 'm'
     else:
         return 'error'
 

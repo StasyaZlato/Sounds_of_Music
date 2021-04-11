@@ -4,24 +4,37 @@ import librosa
 import numpy as np
 
 import neural_network
-from constants import CHORDS_DICT_REVERSED
+from constants import CHORDS_DICT_REVERSED, CHORDS_DICT_FOURIER, CHORDS_DICT
 from fourier import get_chord
 from torch import is_tensor
+from matplotlib import pyplot as plt
+from create_graphics import get_file_name_from_path
+import os
 
 
-def get_frequency(collection):
+def get_frequency(collection, is_fourier):
     freq = {}
+    if is_fourier:
+        freq = {key: 0 for key in CHORDS_DICT_FOURIER}
+    else:
+        freq = {key: 0 for key in CHORDS_DICT_REVERSED}
+
     cnt = 0
     for el in collection:
         if is_tensor(el):
-            el = el.item()
-        if el in freq.keys():
-            freq[el] += 1
-        else:
-            freq[el] = 1
+            el = CHORDS_DICT_REVERSED[el.item()]
+        freq[el] += 1
         cnt += 1
 
     return {key: value / cnt for key, value in freq.items()}
+
+
+def plot_histogram(frequencies, filename):
+    dirname = get_file_name_from_path(filename)
+    plt.figure(figsize=(14, 5))
+    plt.bar(frequencies.keys(), frequencies.values())
+    res_file = os.path.join(dirname, "histogram.png")
+    plt.savefig(res_file)
 
 
 class Composition:
@@ -58,10 +71,11 @@ class Composition:
 
     def get_chords_with_ann(self, path_to_model):
         chords_from_ann = neural_network.predict_chords(self.chords_features, path_to_model)
-        dict_freq = get_frequency(chords_from_ann)
+        dict_freq = get_frequency(chords_from_ann, False)
+        plot_histogram(dict_freq, self.filename)
         print(dict_freq)
         self.chords = list(
-            map(lambda x: CompositionChord(dict_freq[x.item()], CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
+            map(lambda x: CompositionChord(dict_freq[CHORDS_DICT_REVERSED[x.item()]], CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
 
     def get_chords_with_fourier(self):
         chords_from_fourier = []
@@ -69,7 +83,8 @@ class Composition:
             next_chord = get_chord(sample, self.sr)
             if next_chord != 'error':
                 chords_from_fourier.append(next_chord)
-        dict_freq = get_frequency(chords_from_fourier)
+        dict_freq = get_frequency(chords_from_fourier, True)
+        plot_histogram(dict_freq, self.filename)
         self.chords = list(map(lambda x: CompositionChord(dict_freq[x], x), chords_from_fourier))
 
     def process_composition_ann(self, path_to_model):
