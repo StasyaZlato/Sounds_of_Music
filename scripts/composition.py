@@ -1,8 +1,10 @@
+from json import JSONEncoder
+
 import librosa
 import numpy as np
+
 import neural_network
-from constants import CHORDS_DICT, CHORDS_DICT_REVERSED
-from json import JSONEncoder
+from constants import CHORDS_DICT_REVERSED
 from fourier import get_chord
 
 
@@ -38,23 +40,24 @@ class Composition:
 
         self.chords_features = [list(map(lambda x: np.mean(x).item(), chord)) for chord in features]
 
-    def get_chords_with_ann(self):
-        chords_from_ann = neural_network.predict_chords(self.chords_features)
+    def get_chords_with_ann(self, path_to_model):
+        chords_from_ann = neural_network.predict_chords(self.chords_features, path_to_model)
 
-        self.chords = list(map(lambda x: CompositionChord(self.chord_duration, CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
+        self.chords = list(
+            map(lambda x: CompositionChord(self.chord_duration, CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
 
     def get_chords_with_fourier(self):
-      chords_from_fourier = []
-      for sample in self.chords_librosa:
-          next_chord = get_chord(sample, self.sr)
-          if next_chord != 'error':
-              chords_from_fourier.append(next_chord)
-      self.chords = list(map(lambda x: CompositionChord(self.chord_duration, x), chords_from_fourier))
+        chords_from_fourier = []
+        for sample in self.chords_librosa:
+            next_chord = get_chord(sample, self.sr)
+            if next_chord != 'error':
+                chords_from_fourier.append(next_chord)
+        self.chords = list(map(lambda x: CompositionChord(self.chord_duration, x), chords_from_fourier))
 
-    def process_composition_ann(self):
+    def process_composition_ann(self, path_to_model):
         self.stream()
         self.get_features()
-        self.get_chords_with_ann()
+        self.get_chords_with_ann(path_to_model)
 
     def process_composition_fourier(self):
         self.stream()
@@ -82,4 +85,3 @@ class CompositionChord:
 
     def encode(self):
         return self.__dict__
-
