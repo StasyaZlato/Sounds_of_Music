@@ -1,8 +1,12 @@
 package controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -28,14 +32,24 @@ public class MainMenuController {
         buttonDesignChange(0);
 
         scrollPaneEnableBtn.setMaxHeight(Double.MAX_VALUE);
+
+        files.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/general_statistics.fxml"));
+            try {
+                Parent root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            GeneralStatisticsController controller = loader.getController();
+            controller.onFileSelected(newValue);
+        });
     }
 
     public void setFilesList(ObservableList<String> filesLst) {
         loadedFiles = filesLst;
         files.setItems(loadedFiles);
         scrollFiles.setManaged(true);
-        System.out.println("setFilesList called");
-        System.out.println("files length is " + filesLst.size());
     }
 
     public void openNextTab(MouseEvent mouseEvent) throws IOException {

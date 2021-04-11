@@ -18,10 +18,10 @@
     </Label>
 
     <TableView fx:id="frequencyTable"
-               GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" prefWidth="400.0">
+               GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowSpan="2" prefWidth="400.0">
         <columns>
-            <TableColumn text="Chord" fx:id="chord"/>
-            <TableColumn text="Frequency" fx:id="frequency"/>
+            <TableColumn text="Chord" fx:id="chordColumn"/>
+            <TableColumn text="Frequency" fx:id="frequencyColumn"/>
         </columns>
     </TableView>
     <ImageView fx:id="graph" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
