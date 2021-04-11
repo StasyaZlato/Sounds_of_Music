@@ -50,26 +50,23 @@ public class MainMenuController {
         files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             String selectedFile = files.getSelectionModel().getSelectedItem();
             int id = files.getSelectionModel().getSelectedIndex();
-
+            String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
+            Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
             if (current == 0) {
                 GeneralStatisticsController.rows.clear();
 
                 List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
                 GeneralStatisticsController.rows.addAll(data);
+
+                Path histogramPath = Path.of(folderPath.toString(), "histogram.png").toAbsolutePath();
+                GeneralStatisticsController.pathToHistogram.set(histogramPath.toString());
             } else if (current == 1) {
-                String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
-                Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
                 Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
                 Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
 
                 GeneralGraphsController.pathToChromagram.set(chromagramPath.toString());
                 GeneralGraphsController.pathToWaveplot.set(waveplotPath.toString());
             }
-            List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
-            GeneralStatisticsController.rows.addAll(data);
-
-            String histogramPath = getHistogramFileName(selectedFile);
-            setHistogramImage(histogramPath);
         });
 
         try {
@@ -93,29 +90,10 @@ public class MainMenuController {
         return parts[0];
     }
 
-    private void setHistogramImage(String filepath) {
-        System.out.println("in setHistogramImage");
-        System.out.println(filepath);
-        GeneralStatisticsController.histogramImage = new Image(filepath);
-    }
-
-    private String getHistogramFileName(String path) {
-        System.out.println("in getHistogramFileName");
-        File tmp = new File(path);
-        String filename = tmp.getName();
-        int extIndex = filename.indexOf('.');
-        filename = filename.substring(0, extIndex);
-        System.out.println(filename);
-
-        return Paths.get(filename, "histogram.png").toUri().toString();
-    }
-
     public void setFilesList(ObservableList<String> filesLst) {
         loadedFiles = filesLst;
         files.setItems(loadedFiles);
         scrollFiles.setManaged(true);
-        System.out.println("setFilesList called");
-        System.out.println("files length is " + filesLst.size());
     }
 
     public void openNextTab(MouseEvent mouseEvent) throws IOException {
@@ -193,9 +171,11 @@ public class MainMenuController {
 
         if (scrollFiles.isManaged()) {
             GeneralGraphsController.maxWidth.set(500);
+            GeneralStatisticsController.maxWidth.set(500);
         }
         else {
             GeneralGraphsController.maxWidth.set(900);
+            GeneralStatisticsController.maxWidth.set(900);
         }
     }
 }
