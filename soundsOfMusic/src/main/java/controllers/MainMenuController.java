@@ -3,11 +3,15 @@ package controllers;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import pojo.CompositionChord;
@@ -22,10 +26,16 @@ public class MainMenuController {
     public Button tonnetzTab;
     public Button tdaTab;
     public Button scrollPaneEnableBtn;
+    public Button graphsTab;
 
     int current = 0;
 
     ObservableList<String> loadedFiles = FXCollections.observableArrayList();
+
+    public static Node generalStatisticsScene;
+    public static Node graphsScene;
+    public static Node tonnetzScene;
+    public static Node tdaScene;
 
     public void initialize() {
         buttonDesignChange(0);
@@ -41,6 +51,17 @@ public class MainMenuController {
             List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
             GeneralStatisticsController.rows.addAll(data);
         });
+
+        try {
+            generalStatisticsScene = FXMLLoader.load(getClass().getResource("/fxml/general_statistics.fxml"));
+            graphsScene = FXMLLoader.load(getClass().getResource("/fxml/general_graphs.fxml"));
+            tonnetzScene = FXMLLoader.load(getClass().getResource("/fxml/tonnetz_results.fxml"));
+            tdaScene = FXMLLoader.load(getClass().getResource("/fxml/tda_results.fxml"));
+        } catch (IOException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Произошла ошибка во время загрузки сцены! Возможно, архив " +
+                    "приложения был поврежден.");
+            alert.show();
+        }
     }
 
     public void setFilesList(ObservableList<String> filesLst) {
@@ -57,21 +78,41 @@ public class MainMenuController {
         switch (b.getId()) {
             case "infoTab":
                 buttonDesignChange(0);
-//                MainLaunch.openSettings();
+                openGeneralStatisticsScene();
+                break;
+            case "graphsTab":
+                buttonDesignChange(1);
+                openGraphsScene();
                 break;
             case "tonnetzTab":
-                buttonDesignChange(1);
-//                CourseWorkMain.MainLaunch.openProcess();
+                buttonDesignChange(2);
+                openTonnetzResultsScene();
                 break;
             case "tdaTab":
-                buttonDesignChange(2);
-//                CourseWorkMain.MainLaunch.openUserInput();
+                buttonDesignChange(3);
+                openTADResultsScene();
                 break;
         }
     }
 
+    public void openGeneralStatisticsScene() {
+        ((BorderPane) ChooseFilesController.root).setCenter(generalStatisticsScene);
+    }
+
+    public void openGraphsScene() {
+        ((BorderPane) ChooseFilesController.root).setCenter(graphsScene);
+    }
+
+    public void openTonnetzResultsScene() {
+        ((BorderPane) ChooseFilesController.root).setCenter(tonnetzScene);
+    }
+
+    public void openTADResultsScene() {
+        ((BorderPane) ChooseFilesController.root).setCenter(tdaScene);
+    }
+
     private void buttonDesignChange(int id) {
-        Button[] buttons = {infoTab, tonnetzTab, tdaTab};
+        Button[] buttons = {infoTab, graphsTab, tonnetzTab, tdaTab};
         VBox.setVgrow(buttons[id], Priority.ALWAYS);
         buttons[id].setMaxHeight(Double.MAX_VALUE);
         buttons[id].getStyleClass().clear();
@@ -79,7 +120,7 @@ public class MainMenuController {
         buttons[id].getStyleClass().add("button");
         current = id;
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (i != id) {
                 VBox.setVgrow(buttons[i], Priority.NEVER);
                 buttons[i].getStyleClass().clear();

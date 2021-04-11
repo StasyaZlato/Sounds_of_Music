@@ -1,6 +1,7 @@
 from json import JSONEncoder
 
 import librosa
+import librosa.display
 import numpy as np
 
 import neural_network
@@ -8,7 +9,6 @@ from constants import CHORDS_DICT_REVERSED, CHORDS_DICT_FOURIER, CHORDS_DICT
 from fourier import get_chord
 from torch import is_tensor
 from matplotlib import pyplot as plt
-from create_graphics import get_file_name_from_path
 import os
 
 
@@ -27,15 +27,6 @@ def get_frequency(collection, is_fourier):
         cnt += 1
 
     return {key: value / cnt for key, value in freq.items()}
-
-
-def plot_histogram(frequencies, filename):
-    dirname = get_file_name_from_path(filename)
-    plt.figure(figsize=(14, 5))
-    plt.bar(frequencies.keys(), frequencies.values())
-    res_file = os.path.join(dirname, "histogram.png")
-    plt.savefig(res_file)
-
 
 class Composition:
     def __init__(self, filename, chord_duration=2):
@@ -72,7 +63,7 @@ class Composition:
     def get_chords_with_ann(self, path_to_model):
         chords_from_ann = neural_network.predict_chords(self.chords_features, path_to_model)
         dict_freq = get_frequency(chords_from_ann, False)
-        plot_histogram(dict_freq, self.filename)
+        self.plot_histogram(dict_freq)
         print(dict_freq)
         self.chords = list(
             map(lambda x: CompositionChord(dict_freq[CHORDS_DICT_REVERSED[x.item()]], CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
@@ -84,7 +75,7 @@ class Composition:
             if next_chord != 'error':
                 chords_from_fourier.append(next_chord)
         dict_freq = get_frequency(chords_from_fourier, True)
-        plot_histogram(dict_freq, self.filename)
+        self.plot_histogram(dict_freq)
         self.chords = list(map(lambda x: CompositionChord(dict_freq[x], x), chords_from_fourier))
 
     def process_composition_ann(self, path_to_model):
@@ -95,6 +86,50 @@ class Composition:
     def process_composition_fourier(self):
         self.stream()
         self.get_chords_with_fourier()
+
+    def get_file_name_from_path(self):
+        head, tail = os.path.split(self.filename)
+        index = tail.index('.')
+        return os.path.join("generated_images", tail[:index])
+
+    def librosa_make_graphics(self):
+        dirname = self.get_file_name_from_path()
+        print(dirname)
+        try:
+            os.mkdir(dirname)
+        except OSError:
+            print("Creation of the directory %s failed" % dirname)
+        else:
+            print("Successfully created the directory %s " % dirname)
+
+        self.create_waveplot(dirname)
+        self.create_chromagram(dirname)
+
+    def create_waveplot(self, dirname):
+        plt.figure(figsize=(14, 5))
+        librosa.display.waveplot(self.y, sr=self.sr)
+
+        filename = os.path.join(dirname, "waveplot.png")
+        print(filename)
+        plt.savefig(filename)
+
+    def create_chromagram(self, dirname):
+        X = librosa.stft(self.y)
+        Xdb = librosa.amplitude_to_db(abs(X))
+        plt.figure(figsize=(14, 5))
+        librosa.display.specshow(Xdb, sr=self.sr, x_axis='time', y_axis='hz')
+        plt.colorbar()
+
+        filename = os.path.join(dirname, "chromagram.png")
+        print(filename)
+        plt.savefig(filename)
+
+    def plot_histogram(self, frequencies):
+        dirname = self.get_file_name_from_path()
+        plt.figure(figsize=(14, 5))
+        plt.bar(frequencies.keys(), frequencies.values())
+        res_file = os.path.join(dirname, "histogram.png")
+        plt.savefig(res_file)
 
     class CompositionEncoder(JSONEncoder):
         def default(self, o):
