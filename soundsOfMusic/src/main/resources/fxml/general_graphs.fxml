@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.stage.Screen?>
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.GeneralGraphsController">
+<VBox fx:id="graphVB"
+      prefHeight="400.0" prefWidth="600.0" spacing="20">
+
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
+    </fx:define>
+    <Label wrapText="true" visible="false" fx:id="descrWaveplot">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        Waveplot (based on lybrosa load result)
+    </Label>
+    <ImageView fx:id="waveplotImageView"
+               fitWidth="500"
+               pickOnBounds="true"
+               preserveRatio="true"/>
+    <Label visible="false" wrapText="true" fx:id="descrChromagram">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        Chromagram (based of lybrosa stft feature)
+    </Label>
+    <ImageView fx:id="chromagramImageView"
+               fitWidth="500"
+               pickOnBounds="true"
+               preserveRatio="true"/>
+</VBox>
+</ScrollPane>

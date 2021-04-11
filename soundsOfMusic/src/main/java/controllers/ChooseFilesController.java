@@ -36,6 +36,8 @@ public class ChooseFilesController {
     public Button proceedBtn;
     ObservableList<String> chosenFiles = FXCollections.observableArrayList();
 
+    public static Parent root;
+
     public void initialize() {
         proceedBtn.disableProperty().bind(Bindings.size(chosenFiles).lessThan(1));
     }
@@ -85,7 +87,6 @@ public class ChooseFilesController {
                 response = task.getValue();
                 System.out.println(response);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-                Parent root;
                 try {
                     root = loader.load();
 

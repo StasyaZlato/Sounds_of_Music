@@ -2,14 +2,13 @@ import json
 import sys
 
 from composition import Composition
-from create_graphics import librosa_make_graphics
 
 
 def process_file(paths, chord_duration, path_to_model):
     compositions = []
     for path in paths:
-        librosa_make_graphics(path)
         composition = Composition(path, chord_duration)
+        composition.librosa_make_graphics()
         composition.process_composition_ann(path_to_model)
         compositions.append(composition)
 
