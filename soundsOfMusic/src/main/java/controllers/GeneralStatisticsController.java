@@ -1,20 +1,41 @@
 package controllers;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import pojo.CompositionChord;
 
 public class GeneralStatisticsController {
-    @FXML TableView frequencyTable;
+    @FXML TableColumn<CompositionChord, String> chordColumn;
+    @FXML TableColumn<CompositionChord, Number> frequencyColumn;
+    @FXML TableView<CompositionChord> frequencyTable;
+    ObservableList<CompositionChord> rows = FXCollections.observableArrayList();
 
     public void initialize() {
-        frequencyTable.columnResizePolicyProperty();
-        ObservableList<TableColumn> columns = frequencyTable.getColumns();
-        columns.get(0).prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
-        columns.get(1).prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
+        frequencyTable.setEditable(true);
+        chordColumn.prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
+        frequencyColumn.prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
 
-        columns.get(0).setResizable(false);
-        columns.get(1).setResizable(false);
+        chordColumn.setResizable(false);
+        frequencyColumn.setResizable(false);
+
+        chordColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().chord));
+        frequencyColumn.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().frequency));
+        rows.add(new CompositionChord(0, "A"));
+
+
+        frequencyTable.setItems(rows);
+    }
+
+    public void onFileSelected(Object selectedFile) {
+        System.out.println(selectedFile);
+        CompositionChord element = new CompositionChord(0, "A");
+        //rows = FXCollections.observableArrayList();
+        frequencyTable.getItems().add(element);
+        frequencyTable.setItems(rows);
     }
 }
