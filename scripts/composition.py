@@ -6,6 +6,22 @@ import numpy as np
 import neural_network
 from constants import CHORDS_DICT_REVERSED
 from fourier import get_chord
+from torch import is_tensor
+
+
+def get_frequency(collection):
+    freq = {}
+    cnt = 0
+    for el in collection:
+        if is_tensor(el):
+            el = el.item()
+        if el in freq.keys():
+            freq[el] += 1
+        else:
+            freq[el] = 1
+        cnt += 1
+
+    return {key: value / cnt for key, value in freq.items()}
 
 
 class Composition:
@@ -42,9 +58,10 @@ class Composition:
 
     def get_chords_with_ann(self, path_to_model):
         chords_from_ann = neural_network.predict_chords(self.chords_features, path_to_model)
-
+        dict_freq = get_frequency(chords_from_ann)
+        print(dict_freq)
         self.chords = list(
-            map(lambda x: CompositionChord(self.chord_duration, CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
+            map(lambda x: CompositionChord(dict_freq[x.item()], CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
 
     def get_chords_with_fourier(self):
         chords_from_fourier = []
@@ -52,7 +69,8 @@ class Composition:
             next_chord = get_chord(sample, self.sr)
             if next_chord != 'error':
                 chords_from_fourier.append(next_chord)
-        self.chords = list(map(lambda x: CompositionChord(self.chord_duration, x), chords_from_fourier))
+        dict_freq = get_frequency(chords_from_fourier)
+        self.chords = list(map(lambda x: CompositionChord(dict_freq[x], x), chords_from_fourier))
 
     def process_composition_ann(self, path_to_model):
         self.stream()
@@ -79,8 +97,8 @@ class Composition:
 
 
 class CompositionChord:
-    def __init__(self, duration, chord):
-        self.duration = duration
+    def __init__(self, frequency, chord):
+        self.frequency = frequency
         self.chord = chord
 
     def encode(self):

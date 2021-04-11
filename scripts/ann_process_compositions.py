@@ -1,6 +1,7 @@
-import sys
-from composition import Composition
 import json
+import sys
+
+from composition import Composition
 
 
 def process_file(paths, chord_duration, path_to_model):
