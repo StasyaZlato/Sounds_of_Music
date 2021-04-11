@@ -1,26 +1,29 @@
 package controllers;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import pojo.CompositionChord;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainMenuController {
     public ScrollPane scrollFiles;
-    public ListView files;
+    public ListView<String> files;
     public Button infoTab;
     public Button tonnetzTab;
     public Button tdaTab;
     public Button scrollPaneEnableBtn;
+
+    int current = 0;
 
     ObservableList<String> loadedFiles = FXCollections.observableArrayList();
 
@@ -28,6 +31,16 @@ public class MainMenuController {
         buttonDesignChange(0);
 
         scrollPaneEnableBtn.setMaxHeight(Double.MAX_VALUE);
+
+        files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            String selectedFile = files.getSelectionModel().getSelectedItem();
+            int id = files.getSelectionModel().getSelectedIndex();
+
+            GeneralStatisticsController.rows.clear();
+
+            List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
+            GeneralStatisticsController.rows.addAll(data);
+        });
     }
 
     public void setFilesList(ObservableList<String> filesLst) {
@@ -64,6 +77,7 @@ public class MainMenuController {
         buttons[id].getStyleClass().clear();
         buttons[id].getStyleClass().add("active");
         buttons[id].getStyleClass().add("button");
+        current = id;
 
         for (int i = 0; i < 3; i++) {
             if (i != id) {
@@ -79,8 +93,7 @@ public class MainMenuController {
         ImageView img;
         if (scrollFiles.isManaged()) {
             img = new ImageView("/images/left-arrow-white.png");
-        }
-        else {
+        } else {
             img = new ImageView("/images/right-arrow-white.png");
         }
         img.setFitWidth(10);

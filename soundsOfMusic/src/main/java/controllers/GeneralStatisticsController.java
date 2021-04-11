@@ -10,10 +10,13 @@ import javafx.scene.control.TableView;
 import pojo.CompositionChord;
 
 public class GeneralStatisticsController {
-    @FXML TableColumn<CompositionChord, String> chordColumn;
-    @FXML TableColumn<CompositionChord, Number> frequencyColumn;
-    @FXML TableView<CompositionChord> frequencyTable;
-    ObservableList<CompositionChord> rows = FXCollections.observableArrayList();
+    public static ObservableList<CompositionChord> rows = FXCollections.observableArrayList();
+    @FXML
+    TableColumn<CompositionChord, String> chordColumn;
+    @FXML
+    TableColumn<CompositionChord, Number> frequencyColumn;
+    @FXML
+    TableView<CompositionChord> frequencyTable;
 
     public void initialize() {
         frequencyTable.setEditable(true);
@@ -25,17 +28,7 @@ public class GeneralStatisticsController {
 
         chordColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().chord));
         frequencyColumn.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().frequency));
-        rows.add(new CompositionChord(0, "A"));
 
-
-        frequencyTable.setItems(rows);
-    }
-
-    public void onFileSelected(Object selectedFile) {
-        System.out.println(selectedFile);
-        CompositionChord element = new CompositionChord(0, "A");
-        //rows = FXCollections.observableArrayList();
-        frequencyTable.getItems().add(element);
         frequencyTable.setItems(rows);
     }
 }

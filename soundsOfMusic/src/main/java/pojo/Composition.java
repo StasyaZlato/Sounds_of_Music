@@ -1,7 +1,6 @@
 package pojo;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,7 +17,8 @@ public class Composition {
     private double duration;
     private List<CompositionChord> chords;
 
-    public Composition() { }
+    public Composition() {
+    }
 
     public Composition(
             String filename,
@@ -35,32 +35,32 @@ public class Composition {
         return duration;
     }
 
-    public int getSr() {
-        return sr;
-    }
-
-    public List<CompositionChord> getChords() {
-        return chords;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
     public void setDuration(double duration) {
         this.duration = duration;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public int getSr() {
+        return sr;
     }
 
     public void setSr(int sr) {
         this.sr = sr;
     }
 
+    public List<CompositionChord> getChords() {
+        return chords;
+    }
+
     public void setChords(List<CompositionChord> chords) {
         this.chords = chords;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }
 
@@ -88,7 +88,7 @@ class CompositionDeserializer extends StdDeserializer<Composition> {
         List<CompositionChord> chords = new ArrayList<>();
 
         JsonNode chordsNode = compositionNode.get("chords");
-        for (var el: chordsNode) {
+        for (var el : chordsNode) {
             chords.add(new CompositionChord(el.get("frequency").doubleValue(), el.get("chord").textValue()));
         }
 
