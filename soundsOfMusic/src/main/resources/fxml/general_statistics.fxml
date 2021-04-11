@@ -25,8 +25,8 @@
 
     <TableView fx:id="frequencyTable" prefHeight="${screen.visualBounds.height}">
         <columns>
-            <TableColumn text="Chord" fx:id="chord"/>
-            <TableColumn text="Frequency" fx:id="frequency"/>
+            <TableColumn text="Chord" fx:id="chordColumn"/>
+            <TableColumn text="Frequency" fx:id="frequencyColumn"/>
         </columns>
     </TableView>
     <ImageView fx:id="graph" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
