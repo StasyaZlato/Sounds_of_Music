@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -16,10 +17,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import pojo.CompositionChord;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.net.URI;
 import java.util.List;
 
 public class MainMenuController {
@@ -57,13 +59,17 @@ public class MainMenuController {
             } else if (current == 1) {
                 String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
                 Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
-
                 Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
                 Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
 
                 GeneralGraphsController.pathToChromagram.set(chromagramPath.toString());
                 GeneralGraphsController.pathToWaveplot.set(waveplotPath.toString());
             }
+            List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
+            GeneralStatisticsController.rows.addAll(data);
+
+            String histogramPath = getHistogramFileName(selectedFile);
+            setHistogramImage(histogramPath);
         });
 
         try {
@@ -85,6 +91,23 @@ public class MainMenuController {
         String[] parts = fileName.split("\\.");
 
         return parts[0];
+    }
+
+    private void setHistogramImage(String filepath) {
+        System.out.println("in setHistogramImage");
+        System.out.println(filepath);
+        GeneralStatisticsController.histogramImage = new Image(filepath);
+    }
+
+    private String getHistogramFileName(String path) {
+        System.out.println("in getHistogramFileName");
+        File tmp = new File(path);
+        String filename = tmp.getName();
+        int extIndex = filename.indexOf('.');
+        filename = filename.substring(0, extIndex);
+        System.out.println(filename);
+
+        return Paths.get(filename, "histogram.png").toUri().toString();
     }
 
     public void setFilesList(ObservableList<String> filesLst) {
