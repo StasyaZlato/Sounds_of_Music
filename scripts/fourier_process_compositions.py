@@ -2,11 +2,14 @@ import json
 import sys
 
 from composition import Composition
+from create_graphics import librosa_make_graphics
 
 
 def process_file(paths, chord_duration):
     compositions = []
+    print(paths)
     for path in paths:
+        librosa_make_graphics(path)
         composition = Composition(path, chord_duration)
         composition.process_composition_fourier()
         compositions.append(composition)
@@ -17,6 +20,7 @@ def process_file(paths, chord_duration):
 
 def main():
     args = sys.argv[1].split()
+    print('args: ', args)
 
     chord_duration = float(args[0])
 
