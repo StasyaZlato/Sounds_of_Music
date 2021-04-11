@@ -1,3 +1,4 @@
 package controllers;
 
-public class LoadingDialogController { }
+public class LoadingDialogController {
+}
