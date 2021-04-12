@@ -3,7 +3,6 @@ package tasks;
 import pojo.CompositionsResponse;
 import utils.PythonCaller;
 
-import java.io.IOException;
 import java.util.List;
 
 public class FourierTask extends BasePreprocessingTask {

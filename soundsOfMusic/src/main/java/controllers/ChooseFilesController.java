@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 public class ChooseFilesController {
 
     public static CompositionsResponse response;
+    public static Parent root;
     public ListView filesChosenLst;
     public ScrollPane scrollFiles;
     public CheckBox fourier;
@@ -35,8 +36,6 @@ public class ChooseFilesController {
     public Slider chordDurationSlider;
     public Button proceedBtn;
     ObservableList<String> chosenFiles = FXCollections.observableArrayList();
-
-    public static Parent root;
 
     public void initialize() {
         proceedBtn.disableProperty().bind(Bindings.size(chosenFiles).lessThan(1));

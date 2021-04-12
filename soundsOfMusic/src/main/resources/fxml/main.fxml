@@ -32,7 +32,7 @@
             <Button fx:id="scrollPaneEnableBtn" prefWidth="10" onMouseClicked="#manageListView" styleClass="helper">
                 <graphic>
                     <ImageView fitWidth="10" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../images/left-arrow-white.png"/>
+                        <Image url="@../images/right-arrow-white.png"/>
                     </ImageView>
                 </graphic>
             </Button>
