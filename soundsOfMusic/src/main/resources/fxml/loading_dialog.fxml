@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<GridPane style="-fx-background-color: #FFFFFF">
+    <children>
+        <Label GridPane.columnIndex="0" wrapText="true"
+               text="Обрабатываем данные, это может занять некоторое время...">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </Label>
+        <ImageView GridPane.columnIndex="1" fitWidth="50" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/Spinner-2.gif"/>
+        </ImageView>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0"/>
+    </columnConstraints>
+
+    <stylesheets>
+        <URL value="@../styles/fontstyle.css"/>
+        <URL value="@../styles/buttons.css"/>
+        <URL value="@../styles/borderPane.css"/>
+    </stylesheets>
+</GridPane>
+
