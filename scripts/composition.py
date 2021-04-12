@@ -1,20 +1,19 @@
+import os
 from json import JSONEncoder
+from pathlib import Path
 
 import librosa
 import librosa.display
 import numpy as np
+from matplotlib import pyplot as plt
+from torch import is_tensor
 
 import neural_network
-from constants import CHORDS_DICT_REVERSED, CHORDS_DICT_FOURIER, CHORDS_DICT
+from constants import CHORDS_DICT_REVERSED, CHORDS_DICT_FOURIER
 from fourier import get_chord
-from torch import is_tensor
-from matplotlib import pyplot as plt
-import os
-from pathlib import Path
 
 
 def get_frequency(collection, is_fourier):
-    freq = {}
     if is_fourier:
         freq = {key: 0 for key in CHORDS_DICT_FOURIER}
     else:
@@ -28,6 +27,7 @@ def get_frequency(collection, is_fourier):
         cnt += 1
 
     return {key: value / cnt for key, value in freq.items()}
+
 
 class Composition:
     def __init__(self, filename, chord_duration=2):
@@ -67,7 +67,8 @@ class Composition:
         self.plot_histogram(dict_freq)
         print(dict_freq)
         self.chords = list(
-            map(lambda x: CompositionChord(dict_freq[CHORDS_DICT_REVERSED[x.item()]], CHORDS_DICT_REVERSED[x.item()]), chords_from_ann))
+            map(lambda x: CompositionChord(dict_freq[CHORDS_DICT_REVERSED[x.item()]], CHORDS_DICT_REVERSED[x.item()]),
+                chords_from_ann))
 
     def get_chords_with_fourier(self):
         chords_from_fourier = []

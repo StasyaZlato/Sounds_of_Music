@@ -6,8 +6,8 @@ import java.io.IOException;
 public class PythonCaller {
     public static int executePythonScipt(String scriptPath, String args) throws Exception {
         String pythonExecutable = getPythonExecutable();
-        System.out.println("python is: "+ pythonExecutable);
-        if (pythonExecutable == "none") {
+        System.out.println("python is: " + pythonExecutable);
+        if (pythonExecutable.equals("none")) {
             throw new Exception("No python executable");
         }
 
@@ -21,18 +21,19 @@ public class PythonCaller {
     }
 
     public static String getPythonExecutable() throws IOException, InterruptedException {
-        ProcessBuilder processBuilder = new ProcessBuilder("python", "--version");
+
+        ProcessBuilder processBuilder = new ProcessBuilder("python3", "--version");
         Process process = processBuilder.start();
 
         if (process.waitFor() == 0) {
-            return "python";
+            return "python3";
         }
 
-        processBuilder = new ProcessBuilder("python3",  "--version");
+        processBuilder = new ProcessBuilder("python", "--version");
         process = processBuilder.start();
 
         if (process.waitFor() == 0) {
-            return "python3";
+            return "python";
         }
 
         return "none";

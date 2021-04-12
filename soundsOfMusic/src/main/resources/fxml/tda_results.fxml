@@ -6,9 +6,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controllers.TdaResultsControllers"
-            prefHeight="400.0" prefWidth="600.0">
-<Label>tda</Label>
-</AnchorPane>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.TdaResultsControllers"
+      prefHeight="400.0" prefWidth="600.0" spacing="20">
+    <Label wrapText="true" visible="false" fx:id="descrPersistenceDiagram">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        Waveplot (based on lybrosa load result)
+    </Label>
+    <ImageView fx:id="persistenceDiagramImage"
+               fitWidth="500"
+               pickOnBounds="true"
+               preserveRatio="true"/>
+</VBox>

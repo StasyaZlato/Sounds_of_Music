@@ -11,15 +11,13 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 
 public class GeneralGraphsController {
-    public ImageView waveplotImageView;
-    public ImageView chromagramImageView;
-
     public static SimpleStringProperty pathToWaveplot = new SimpleStringProperty();
     public static SimpleStringProperty pathToChromagram = new SimpleStringProperty();
+    public static SimpleDoubleProperty maxWidth = new SimpleDoubleProperty();
+    public ImageView waveplotImageView;
+    public ImageView chromagramImageView;
     public Label descrWaveplot;
     public Label descrChromagram;
-
-    public static SimpleDoubleProperty maxWidth = new SimpleDoubleProperty();
     public VBox graphVB;
 
     public void initialize() {
