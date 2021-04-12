@@ -3,7 +3,6 @@ package tasks;
 import pojo.CompositionsResponse;
 import utils.PythonCaller;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
