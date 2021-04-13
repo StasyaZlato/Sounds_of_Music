@@ -48,6 +48,9 @@ public class MainMenuController {
         files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             String selectedFile = files.getSelectionModel().getSelectedItem();
             int id = files.getSelectionModel().getSelectedIndex();
+//            if (id == -1) {
+//                return;
+//            }
             String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
             Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
             List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
@@ -84,8 +87,8 @@ public class MainMenuController {
             tdaScene = FXMLLoader.load(getClass().getResource("/fxml/tda_results.fxml"));
         } catch (IOException ex) {
             ex.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Произошла ошибка во время загрузки сцены! Возможно, архив " +
-                    "приложения был поврежден.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "An error occured while loading scene! " +
+                    "Perhaps the application archive was corrupted");
             alert.show();
         }
     }
@@ -146,8 +149,8 @@ public class MainMenuController {
 
         if (TdaResultsControllers.isFirst) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Выполнить анализ?");
-            alert.setHeaderText("Вы уверены, что хотите запустить анализ? Это может занять некоторое время.");
+            alert.setTitle("Perform analysis?");
+            alert.setHeaderText("Are you sure you want to perform TDA analysis? It might take some time.");
 
             Optional<ButtonType> option = alert.showAndWait();
 

@@ -20,6 +20,8 @@ import tasks.FourierTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,10 +37,15 @@ public class ChooseFilesController {
     public Label lbl;
     public Slider chordDurationSlider;
     public Button proceedBtn;
+    public Label descriptionLabel1;
+    public Label descriptionLabel2;
     ObservableList<String> chosenFiles = FXCollections.observableArrayList();
+
 
     public void initialize() {
         proceedBtn.disableProperty().bind(Bindings.size(chosenFiles).lessThan(1));
+        descriptionLabel1.setWrapText(true);
+        descriptionLabel2.setWrapText(true);
     }
 
     public void openFilePicker(ActionEvent actionEvent) {

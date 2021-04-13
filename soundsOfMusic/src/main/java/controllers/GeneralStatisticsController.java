@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -20,6 +21,7 @@ public class GeneralStatisticsController {
 
     public static SimpleStringProperty pathToHistogram = new SimpleStringProperty();
     public static SimpleDoubleProperty maxWidth = new SimpleDoubleProperty();
+    public Label description;
 
     @FXML
     VBox generalStatsVbox;
@@ -33,6 +35,7 @@ public class GeneralStatisticsController {
     ImageView histogram;
 
     public void initialize() {
+        description.setWrapText(true);
         frequencyTable.setEditable(true);
         chordColumn.prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
         frequencyColumn.prefWidthProperty().bind(frequencyTable.widthProperty().multiply(0.5));
