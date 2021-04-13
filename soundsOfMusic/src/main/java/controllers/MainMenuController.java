@@ -84,8 +84,8 @@ public class MainMenuController {
             tdaScene = FXMLLoader.load(getClass().getResource("/fxml/tda_results.fxml"));
         } catch (IOException ex) {
             ex.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Произошла ошибка во время загрузки сцены! Возможно, архив " +
-                    "приложения был поврежден.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "An error occured while loading scene! " +
+                    "Perhaps the application archive was corrupted");
             alert.show();
         }
     }
@@ -146,8 +146,8 @@ public class MainMenuController {
 
         if (TdaResultsControllers.isFirst) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Выполнить анализ?");
-            alert.setHeaderText("Вы уверены, что хотите запустить анализ? Это может занять некоторое время.");
+            alert.setTitle("Perform analysis?");
+            alert.setHeaderText("Are you sure you want to perform TDA analysis? It might take some time.");
 
             Optional<ButtonType> option = alert.showAndWait();
 

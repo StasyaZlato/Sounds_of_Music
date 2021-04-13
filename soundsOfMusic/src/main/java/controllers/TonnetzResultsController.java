@@ -4,6 +4,7 @@ import graphics.TriangleTile;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -29,6 +30,7 @@ public class TonnetzResultsController {
     private static final double baseRed = baseColor.getRed();
     private static final double baseGreen = baseColor.getGreen();
     private static final double baseBlue = baseColor.getBlue();
+    public Label description;
 
     private TriangleTile[] tiles = new TriangleTile[tonnetzChords.length];
 
@@ -36,6 +38,7 @@ public class TonnetzResultsController {
     AnchorPane tonnetz;
 
     public void initialize() {
+        description.setWrapText(true);
         watcher.addListener((obs, oldVal, newVal) -> {
             colorTonnetz();
         });

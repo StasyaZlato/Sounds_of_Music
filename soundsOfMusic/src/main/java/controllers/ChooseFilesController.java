@@ -35,10 +35,15 @@ public class ChooseFilesController {
     public Label lbl;
     public Slider chordDurationSlider;
     public Button proceedBtn;
+    public Label descriptionLabel1;
+    public Label descriptionLabel2;
     ObservableList<String> chosenFiles = FXCollections.observableArrayList();
+
 
     public void initialize() {
         proceedBtn.disableProperty().bind(Bindings.size(chosenFiles).lessThan(1));
+        descriptionLabel1.setWrapText(true);
+        descriptionLabel2.setWrapText(true);
     }
 
     public void openFilePicker(ActionEvent actionEvent) {
