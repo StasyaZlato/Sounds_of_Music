@@ -77,7 +77,7 @@ class Composition:
             if next_chord != 'error':
                 chords_from_fourier.append(next_chord)
         dict_freq = get_frequency(chords_from_fourier, True)
-        self.plot_histogram(dict_freq)
+        # self.plot_histogram(dict_freq)
         self.chords = list(map(lambda x: CompositionChord(dict_freq[x], x), chords_from_fourier))
 
     def process_composition_ann(self, path_to_model):

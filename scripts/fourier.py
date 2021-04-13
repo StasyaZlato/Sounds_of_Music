@@ -18,7 +18,7 @@ def get_err_margins():
 def frequency_to_note(freq):
     err_margins = get_err_margins()
     if freq < 0 or freq > MAX_FREQ:
-        return 'invalid'
+        return 'unknown'
     for i in range(NOTES):
         for j in range(OCTAVES):
             if abs(freq - FREQ_TABLE[i][j]) <= err_margins[j]:
@@ -48,7 +48,7 @@ def get_chord_notes(notes):
     while len(chord) < 3 and curr_index < len(notes):
         curr_note = notes[curr_index]
         curr_index += 1
-        if curr_note == 'unknown':
+        if curr_note == 'unknown' or curr_note == 'invalid':
             continue
         else:
             curr_note = curr_note[:-1]
@@ -111,6 +111,8 @@ def determine_fifth(root, fifth):
 
 
 def determine_chord(notes):
+    if len(notes) != 3:
+        return 'error'
     notes.sort()
     # figure out root note
     # in case it's G
