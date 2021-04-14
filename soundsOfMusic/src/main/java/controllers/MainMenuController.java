@@ -50,6 +50,9 @@ public class MainMenuController {
 
         files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             int id = files.getSelectionModel().getSelectedIndex();
+            if (id < 0) {
+                return;
+            }
             String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
 
             String folderPath;
