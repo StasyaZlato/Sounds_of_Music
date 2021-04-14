@@ -21,7 +21,7 @@ public class Main {
 
             stage.setTitle("Sounds of music");
 
-            Scene scene = new Scene(open, 600, 400, Color.color(174.0 / 255, 174.0 / 255, 174.0 / 255));
+            Scene scene = new Scene(open, 600, 500, Color.color(174.0 / 255, 174.0 / 255, 174.0 / 255));
 
             stage.setScene(scene);
             stage.show();

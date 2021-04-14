@@ -8,11 +8,11 @@
       xmlns="http://javafx.com/javafx"
       fx:controller="controllers.TdaResultsControllers"
       prefHeight="400.0" prefWidth="600.0" spacing="20">
-    <Label wrapText="true" visible="false" fx:id="descrPersistenceDiagram">
+    <Label wrapText="true" visible="true" fx:id="descrPersistenceDiagram">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
-        Waveplot (based on lybrosa load result)
+        Нажмите на название файла на панели сбоку, чтобы увидеть соответствующую этой музыкальной композиции диаграмму устойчивости.
     </Label>
     <ImageView fx:id="persistenceDiagramImage"
                fitWidth="500"
