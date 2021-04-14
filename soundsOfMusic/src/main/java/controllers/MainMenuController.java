@@ -50,23 +50,30 @@ public class MainMenuController {
             int id = files.getSelectionModel().getSelectedIndex();
             String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
             Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
-            if (current == 0) {
-                GeneralStatisticsController.rows.clear();
+            List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
+            switch (current) {
+                case 0:
+                    GeneralStatisticsController.rows.clear();
+                    GeneralStatisticsController.rows.addAll(data);
 
-                List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
-                GeneralStatisticsController.rows.addAll(data);
+                    Path histogramPath = Path.of(folderPath.toString(), "histogram.png").toAbsolutePath();
+                    GeneralStatisticsController.pathToHistogram.set(histogramPath.toString());
+                    break;
+                case 1:
+                    Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
+                    Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
 
-                Path histogramPath = Path.of(folderPath.toString(), "histogram.png").toAbsolutePath();
-                GeneralStatisticsController.pathToHistogram.set(histogramPath.toString());
-            } else if (current == 1) {
-                Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
-                Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
-
-                GeneralGraphsController.pathToChromagram.set(chromagramPath.toString());
-                GeneralGraphsController.pathToWaveplot.set(waveplotPath.toString());
-            } else if (current == 3) {
-                Path persistenceDiagramPath = Path.of(folderPath.toString(), "persistence_diagram.png").toAbsolutePath();
-                TdaResultsControllers.pathToImage.set(persistenceDiagramPath.toString());
+                    GeneralGraphsController.pathToChromagram.set(chromagramPath.toString());
+                    GeneralGraphsController.pathToWaveplot.set(waveplotPath.toString());
+                    break;
+                case 2:
+                    TonnetzResultsController.setChords(data);
+                    TonnetzResultsController.watcher.set(true);
+                    break;
+                case 3:
+                    Path persistenceDiagramPath = Path.of(folderPath.toString(), "persistence_diagram.png").toAbsolutePath();
+                    TdaResultsControllers.pathToImage.set(persistenceDiagramPath.toString());
+                    break;
             }
         });
 
@@ -77,8 +84,8 @@ public class MainMenuController {
             tdaScene = FXMLLoader.load(getClass().getResource("/fxml/tda_results.fxml"));
         } catch (IOException ex) {
             ex.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Произошла ошибка во время загрузки сцены! Возможно, архив " +
-                    "приложения был поврежден.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "An error occured while loading scene! " +
+                    "Perhaps the application archive was corrupted");
             alert.show();
         }
     }
@@ -139,8 +146,8 @@ public class MainMenuController {
 
         if (TdaResultsControllers.isFirst) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Выполнить анализ?");
-            alert.setHeaderText("Вы уверены, что хотите запустить анализ? Это может занять некоторое время.");
+            alert.setTitle("Perform analysis?");
+            alert.setHeaderText("Are you sure you want to perform TDA analysis? It might take some time.");
 
             Optional<ButtonType> option = alert.showAndWait();
 

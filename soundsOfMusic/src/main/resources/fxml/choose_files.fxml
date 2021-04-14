@@ -15,12 +15,23 @@
     </fx:define>
 
     <top>
-        <Label BorderPane.alignment="CENTER_LEFT">
+        <VBox BorderPane.alignment="CENTER_LEFT">
+        <Label fx:id="descriptionLabel1">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            Very clever text describing what the hell is happening here.
+            С помощью этой программы можно обрабатывать музыкальные композиции, получая последовательность и частотность звучащих в них аккордов.
+            Обратите внимание, что метод преобразования Фурье работает медленнее, хоть и даёт более точные результаты.
         </Label>
+
+        <Label  fx:id="descriptionLabel2">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            Полученные данные визуализируются с помощью нескольких диаграмм, включая диаграмму Tonnetz, и анализируются методами топологического анализа данных.
+            Выберите файлы, которые вы хотите обработать, задайте длительность отрезка, на котором будет определяться аккорд, и нажмите "Далее".
+        </Label>
+        </VBox>
     </top>
 
     <center>

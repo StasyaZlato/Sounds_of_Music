@@ -19,11 +19,13 @@
         <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
 
-    <Label fx:id="description" text="Very clever text describing what is happenning on this tab"
+    <Label fx:id="description"
            GridPane.rowIndex="0" GridPane.columnIndex="0">
         <padding>
             <Insets top="15" right="15" bottom="15" left="5"/>
         </padding>
+        Нажмите на название файла на панели сбоку, чтобы увидеть соответствующие этой музыкальной композиции
+        последовательность аккордов и гистограмму их частотности.
     </Label>
 
     <TableView fx:id="frequencyTable" prefHeight="400">

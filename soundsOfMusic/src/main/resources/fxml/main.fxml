@@ -21,7 +21,7 @@
                     onMouseClicked="#openNextTab"/>
             <Button styleClass="passive" fx:id="graphsTab" prefHeight="100" prefWidth="300" text="Красивые графики"
                     onMouseClicked="#openNextTab"/>
-            <Button styleClass="passive" fx:id="tonnetzTab" prefHeight="100" prefWidth="300" text="Диаграмма Тоннец"
+            <Button styleClass="passive" fx:id="tonnetzTab" prefHeight="100" prefWidth="300" text="Диаграмма Tonnetz"
                     onMouseClicked="#openNextTab"/>
             <Button styleClass="passive" fx:id="tdaTab" prefHeight="100" prefWidth="300" text="ТАД анализ"
                     onMouseClicked="#openNextTab"/>
