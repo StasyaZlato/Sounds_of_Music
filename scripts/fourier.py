@@ -158,3 +158,11 @@ def get_chord(samples, sampling_rate):
     notes = get_notes(freqs)
     chord_notes = get_chord_notes(notes)
     return determine_chord(chord_notes)
+
+
+def get_chord_notes_without_chord(samples, sampling_rate):
+    get_err_margins()
+    xf, yf = transform(samples, sampling_rate)
+    freqs = get_frequencies(xf, yf)
+    notes = get_notes(freqs)
+    return get_chord_notes(notes)

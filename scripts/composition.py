@@ -10,7 +10,7 @@ from torch import is_tensor
 
 import neural_network
 from constants import CHORDS_DICT_REVERSED, CHORDS_DICT_FOURIER
-from fourier import get_chord
+from fourier import get_chord, get_chord_notes_without_chord
 
 
 def get_frequency(collection, is_fourier):
@@ -79,6 +79,27 @@ class Composition:
         dict_freq = get_frequency(chords_from_fourier, True)
         # self.plot_histogram(dict_freq)
         self.chords = list(map(lambda x: CompositionChord(dict_freq[x], x), chords_from_fourier))
+
+    def process_composition_fourier_for_tda(self):
+        self.stream()
+        chords_from_fourier = []
+        for sample in self.chords_librosa:
+            next_chord_notes = get_chord_notes_without_chord(sample, self.sr)
+            if next_chord_notes != 'error':
+                chords_from_fourier.append(tuple(sorted(next_chord_notes)))
+        dct_freq = {chord: 0 for chord in chords_from_fourier}
+        for chord in chords_from_fourier:
+            dct_freq[chord] += 1
+        return dct_freq
+
+    def process_composition_fourier_for_tda_notes(self):
+        self.stream()
+        chords_from_fourier = []
+        for sample in self.chords_librosa:
+            next_chord_notes = get_chord_notes_without_chord(sample, self.sr)
+            if next_chord_notes != 'error':
+                chords_from_fourier.append(tuple(sorted(next_chord_notes)))
+        return chords_from_fourier
 
     def process_composition_ann(self, path_to_model):
         self.stream()

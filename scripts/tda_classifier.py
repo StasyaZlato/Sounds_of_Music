@@ -2,12 +2,24 @@ from os import walk
 
 from gtda.diagrams import PersistenceEntropy
 from gtda.homology import VietorisRipsPersistence
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, BaggingClassifier
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import pickle
 from pydub import AudioSegment
 import os
+from constants import NOTES_LABELS
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_moons, make_circles, make_classification
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+
+from sklearn.pipeline import make_pipeline
+
 
 import librosa
 
@@ -26,77 +38,171 @@ y_data = []
 i = 0
 
 df = pd.read_csv("/Users/nastya_iva/Downloads/metadata/metadata_2013.csv")
-
 df = df[["song_id", "Genre"]]
 
-files = df["song_id"].tolist()
 
-# files = list(map(lambda f: dataset_folder + str(f) + ".mp3", files))
+def process_dataset():
+    files = df["song_id"].tolist()
+
+    notes_dict = {NOTES_LABELS[i]: i for i in range(len(NOTES_LABELS))}
+
+    for file in tqdm(files, desc="processing tracks"):
+        id = file
+        file = dataset_folder + str(file) + ".mp3"
+
+        if os.path.isfile(file.replace(".mp3", "_4.npy")):
+            tonnetz = np.load(file.replace(".mp3", "_4.npy"))
+            X_data.append(np.array(tonnetz))
+            y_data.append(df.query('song_id==' + str(id))['Genre'].item())
+            continue
+
+        if file.endswith(".mp3"):
+            sound = AudioSegment.from_mp3(file)
+            sound.export(file.replace(".mp3", ".wav"), format="wav")
+            file = file.replace("mp3", "wav")
+
+        tonnetz_file_name = file.replace(".wav", "_4.npy")
+        composition = Composition(file, chord_duration=1.5)
+        chords_dct = composition.process_composition_fourier_for_tda_notes()
+
+        # tonnetz = [[[0 for n in NOTES_LABELS] for n in NOTES_LABELS] for n in NOTES_LABELS]
+        tonnetz = [[0 for m in NOTES_LABELS] for n in NOTES_LABELS]
+
+        for n1 in range(len(NOTES_LABELS)):
+            for n2 in range(len(NOTES_LABELS)):
+                note_1 = NOTES_LABELS[n1]
+                note_2 = NOTES_LABELS[n2]
+                cnt = 0
+
+                for chord in chords_dct:
+                    if note_1 in chord and note_2 in chord:
+                        cnt += 1.0
+                cnt /= len(chords_dct)
+
+                tonnetz[n1][n2] = cnt
+                tonnetz[n2][n1] = cnt
+
+        np.save(tonnetz_file_name, np.array(tonnetz))
+
+        # tonnetz = np.load(file)
+        os.remove(file)
+
+        X_data.append(np.array(tonnetz))
+        y_data.append(df.query('song_id==' + str(id))['Genre'].item())
 
 
-# for genre in tqdm(genres, desc="processing genres"):
-#     folder = dataset_folder + "/" + genre
-#     files = []
-#     for (dirpath, dirnames, filenames) in walk(data):
-#         files.extend(filenames)
-#         break
+def get_notes(file):
+    matrix = np.load(file)
 
-for file in tqdm(files, desc="processing tracks"):
-    print(file)
-    id = file
-    file = dataset_folder + str(file) + ".mp3"
-    # if file.endswith(".wav"):
-    #     continue
-    # file = folder + "/" + file
-    if file.endswith(".mp3"):
-        sound = AudioSegment.from_mp3(file)
-        sound.export(file.replace(".mp3", ".wav"), format="wav")
-        # os.remove(file)
-        file = file.replace("mp3", "wav")
+    # notes_dict = {NOTES_LABELS[i]: i for i in range(len(NOTES_LABELS))}
+    notes = NOTES_LABELS
 
-    tonnetz_file_name = file.replace("wav", "npy")
-    tonnetz_librosa_file_name = file.replace(".wav", "_1.npy")
-    composition = Composition(file)
-    composition.process_composition_fourier()
+    st = set()
 
-    dict_freqs = get_frequency(list(map(lambda x: x.chord, composition.chords)), is_fourier=True)
+    matrix_tonnetz = [[0 for i in range(len(notes))] for j in range(len(notes))]
 
-    tonnetz_ch = [["f#", "c#", "g#", "d#"],
-                  ["a#m", "fm", "cm", "gm"],
-                  ["a#", "f", "c", "g"],
-                  ["dm", "am", "em", "bm"],
-                  ["d", "a", "e", "b"],
-                  ["f#m", "c#m", "g#m", "d#m"]]
-    tonnetz = [[dict_freqs[chord] for chord in line] for line in tonnetz_ch]
-    np.save(tonnetz_file_name, np.array(tonnetz))
+    for n in range(len(notes)):
+        for n1 in range(len(notes)):
+            for n2 in range(len(notes)):
+                if tuple(sorted([n, n1, n2])) not in st:
+                    st.add(tuple(sorted([n, n1, n2])))
+                    val = matrix[n][n1][n2]
+                    matrix_tonnetz[n][n1] += val
+                    matrix_tonnetz[n1][n] += val
+                    matrix_tonnetz[n][n2] += val
+                    matrix_tonnetz[n2][n] += val
+                    matrix_tonnetz[n1][n2] += val
+                    matrix_tonnetz[n2][n1] += val
 
-    y, sr = librosa.load(file, sr=None)
-    lib_tonnetz = librosa.feature.tonnetz(y, sr)
-    np.save(tonnetz_librosa_file_name, lib_tonnetz)
+    return matrix_tonnetz
 
-    # tonnetz = np.load(file)
-    X_data.append(tonnetz)
 
-    y_data.append(df.query('song_id==' + str(id))['Genre'].item())
-    os.remove(file)
-i += 1
+def load_dataset_2():
+    files = df["song_id"].tolist()
+
+    notes_dict = {NOTES_LABELS[i]: i for i in range(len(NOTES_LABELS))}
+
+    for file in tqdm(files, desc="processing tracks"):
+        id = file
+        file = dataset_folder + str(file) + ".mp3"
+
+
+
+        if os.path.isfile(file.replace(".mp3", ".npy")):
+            tonnetz = get_notes(file.replace(".mp3", ".npy"))
+            X_data.append(np.array(tonnetz))
+            y_data.append(df.query('song_id==' + str(id))['Genre'].item())
+
+
+
+def load_dataset_3():
+    files = df["song_id"].tolist()
+
+    # notes_dict = {NOTES_LABELS[i]: i for i in range(len(NOTES_LABELS))}
+
+    for file in tqdm(files, desc="processing tracks"):
+        id = file
+        file = dataset_folder + str(file) + ".mp3"
+        tonnetz_file = file.replace(".mp3", "_1.npy")
+
+        if os.path.isfile(file.replace(".mp3", ".npy")):
+            tonnetz = np.load(file.replace(".mp3", ".npy"))
+            X_data.append(np.array(tonnetz))
+            y_data.append(df.query('song_id==' + str(id))['Genre'].item())
+            continue
+        else:
+            if file.endswith(".mp3"):
+                sound = AudioSegment.from_mp3(file)
+                sound.export(file.replace(".mp3", ".wav"), format="wav")
+                file = file.replace("mp3", "wav")
+
+            y, sr = librosa.load(file)
+            tonnetz = librosa.feature.tonnetz(y, sr)
+
+            os.remove(file)
+            X_data.append(tonnetz)
+            y_data.append(df.query('song_id==' + str(id))['Genre'].item())
+
+# load_dataset_3()
+process_dataset()
 
 print("dataset loaded")
 
-VR = VietorisRipsPersistence(homology_dimensions=[0, 1, 2])  # Parameter explained in the text
-diagrams = VR.fit_transform(X_data)
+base_cls = ExtraTreesClassifier()
 
-print("persistence diagrams ready")
+steps = [VietorisRipsPersistence(homology_dimensions=[0, 1, 2], metric="precomputed"),
+         PersistenceEntropy(normalize=True),
+         ExtraTreesClassifier(n_estimators=35, max_depth=None, min_samples_split=20, random_state=42)]
 
-PE = PersistenceEntropy()
-features = PE.fit_transform(diagrams)
+pipeline = make_pipeline(*steps)
 
-print("feature calculated")
+pcs_train, pcs_valid, labels_train, labels_valid = train_test_split(X_data, y_data)
 
-X_train, X_valid, y_train, y_valid = train_test_split(features, y_data)
-model = RandomForestClassifier()
-model.fit(X_train, y_train)
-print(model.score(X_valid, y_valid))
+pipeline.fit(pcs_train, labels_train)
 
-model_filename = 'random_forest'
-pickle.dump(model, open(model_filename, 'wb'))
+print(pipeline.score(pcs_valid, labels_valid))
+print(pipeline.score(pcs_train, labels_train))
+
+
+
+# VR = VietorisRipsPersistence(homology_dimensions=[0, 1, 2, 3])  # Parameter explained in the text
+# diagrams = VR.fit_transform(np.array(X_data))
+#
+# print("persistence diagrams ready")
+#
+# PE = PersistenceEntropy()
+# features = PE.fit_transform(diagrams)
+#
+# print("feature calculated")
+#
+# model = RandomForestClassifier()
+# model.fit(features, y_train)
+#
+# X_valid_feature = PE.transform(VR.transform(X_valid))
+#
+# print(model.score(X_valid_feature, y_valid))
+# print(model.score(features, y_train))
+#
+#
+# model_filename = 'random_forest'
+# pickle.dump(model, open(model_filename, 'wb'))
