@@ -21,7 +21,7 @@ public class TdaResultsControllers {
         descrPersistenceDiagram.textProperty().bind(labelText);
 
         pathToImage.addListener((ob, oldVal, newVal) -> {
-            labelText.set("Persistence diagram");
+            labelText.set("Нажмите на название файла на панели сбоку, чтобы увидеть соответствующую этой музыкальной композиции диаграмму устойчивости.");
             descrPersistenceDiagram.setVisible(true);
             persistenceDiagramImage.setImage(new Image(new File(newVal).toURI().toString()));
             persistenceDiagramImage.setVisible(true);
