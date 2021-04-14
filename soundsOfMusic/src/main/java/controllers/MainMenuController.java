@@ -48,6 +48,9 @@ public class MainMenuController {
         files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             String selectedFile = files.getSelectionModel().getSelectedItem();
             int id = files.getSelectionModel().getSelectedIndex();
+            if (id < 0) {
+                return;
+            }
             String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
             Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
             List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
