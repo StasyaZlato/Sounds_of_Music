@@ -36,6 +36,8 @@ def are_adjacent_notes(first, second):
 
 
 def check_chord_valid(chord, note_to_add):
+    if len(note_to_add) > 2:
+        return False
     for note in chord:
         if are_adjacent_notes(note, note_to_add):
             return False
@@ -111,6 +113,8 @@ def determine_fifth(root, fifth):
 
 
 def determine_chord(notes):
+    if len(notes) != 3:
+        return 'error'
     notes.sort()
     # figure out root note
     # in case it's G
