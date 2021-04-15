@@ -9,7 +9,7 @@ import java.io.File;
 
 public class TdaResultsControllers {
     public static boolean isFirst;
-    public static SimpleStringProperty labelText = new SimpleStringProperty("Анализ не был произведен.");
+    public static SimpleStringProperty labelText = new SimpleStringProperty();
 
     public static SimpleStringProperty pathToImage = new SimpleStringProperty();
 

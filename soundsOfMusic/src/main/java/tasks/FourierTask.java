@@ -13,13 +13,17 @@ public class FourierTask extends BasePreprocessingTask {
 
     @Override
     CompositionsResponse executeScriptWithResponse() throws Exception {
+        String pathToScript = BasePreprocessingTask.getPathToScript("fourier_process_compositions.py");
+        System.out.println(pathToScript);
+
         StringBuilder args = new StringBuilder()
                 .append(chordDuration).append(" ")
                 .append(String.join(" ", paths));
 
-        PythonCaller.executePythonScipt("../scripts/fourier_process_compositions.py", args.toString());
+        PythonCaller.executePythonScipt(pathToScript, args.toString());
 
-        String pathToResponse = "answer_fourier.json";
+        String pathToResponse = BasePreprocessingTask.getPathToAnswer("answer_fourier.json");
+
 
         return parseJson(pathToResponse);
     }

@@ -1,7 +1,9 @@
 import json
+import os
 import sys
 
 from composition import Composition
+from processing_utils import get_json_answer_path
 
 
 def process_file(paths, chord_duration, path_to_model):
@@ -12,7 +14,9 @@ def process_file(paths, chord_duration, path_to_model):
         composition.process_composition_ann(path_to_model)
         compositions.append(composition)
 
-    with open("answer_ann.json", 'w', encoding='utf-8') as f:
+    path_to_json = get_json_answer_path()
+
+    with open(os.path.join(path_to_json, "answer_ann.json"), 'w', encoding='utf-8') as f:
         json.dump(compositions, f, ensure_ascii=False, indent=3, cls=Composition.CompositionEncoder)
 
 

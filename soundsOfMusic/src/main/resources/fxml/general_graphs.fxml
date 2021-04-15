@@ -8,13 +8,19 @@
 <?import javafx.stage.Screen?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="controllers.GeneralGraphsController">
+            fx:controller="controllers.GeneralGraphsController"
+            prefWidth="600.0">
     <VBox fx:id="graphVB"
           prefHeight="400.0" prefWidth="600.0" spacing="20">
-
         <fx:define>
             <Screen fx:factory="getPrimary" fx:id="screen"/>
         </fx:define>
+        <Label styleClass="small" wrapText="true" prefWidth="600" fx:id="chooseFileOnTheLeftLbl">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            Нажмите на название файла на панели сбоку для просмотра графиков
+        </Label>
         <Label wrapText="true" visible="false" fx:id="descrWaveplot">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>

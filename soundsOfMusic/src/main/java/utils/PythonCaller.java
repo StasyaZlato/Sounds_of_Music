@@ -1,7 +1,8 @@
 package utils;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class PythonCaller {
     public static int executePythonScipt(String scriptPath, String args) throws Exception {
@@ -11,9 +12,15 @@ public class PythonCaller {
             throw new Exception("No python executable");
         }
 
+        if (!Files.exists(Paths.get(scriptPath))) {
+            System.out.println("Error getting script");
+            return -1;
+        }
+
         ProcessBuilder processBuilder = new ProcessBuilder(pythonExecutable, scriptPath, args);
         processBuilder.redirectErrorStream(true);
-        processBuilder.redirectOutput(new File("out.txt"));
+        processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+
 
         Process process = processBuilder.start();
 
