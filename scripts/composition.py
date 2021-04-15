@@ -1,6 +1,6 @@
 import os
+import pathlib
 from json import JSONEncoder
-from pathlib import Path
 
 import librosa
 import librosa.display
@@ -92,21 +92,26 @@ class Composition:
     def get_file_name_from_path(self):
         head, tail = os.path.split(self.filename)
         index = tail.index('.')
-        return os.path.join("generated_images", tail[:index])
+        return tail[:index]
 
     def librosa_make_graphics(self):
         dirname = self.get_file_name_from_path()
         print(dirname)
+        path_to_graphs = pathlib.Path(__file__).parent.parent.absolute()
+
+        path_to_graphs = os.path.join(path_to_graphs, "generated", dirname)
+
+        print("Path to graphs is %s" % path_to_graphs)
+
         try:
-            Path("generated_images/").mkdir(parents=True, exist_ok=True)
-            Path(dirname).mkdir(parents=True, exist_ok=True)
+            pathlib.Path(path_to_graphs).mkdir(parents=True, exist_ok=True)
         except OSError:
             print("Creation of the directory %s failed" % dirname)
         else:
             print("Successfully created the directory %s " % dirname)
 
-        self.create_waveplot(dirname)
-        self.create_chromagram(dirname)
+        self.create_waveplot(path_to_graphs)
+        self.create_chromagram(path_to_graphs)
 
     def create_waveplot(self, dirname):
         plt.figure(figsize=(14, 5))
@@ -114,7 +119,10 @@ class Composition:
 
         filename = os.path.join(dirname, "waveplot.png")
         print(filename)
-        plt.savefig(filename)
+
+        path_to_waveplot = pathlib.Path(__file__).parent.parent.absolute()
+
+        plt.savefig(os.path.join(path_to_waveplot, filename))
 
     def create_chromagram(self, dirname):
         X = librosa.stft(self.y)
@@ -124,8 +132,10 @@ class Composition:
         plt.colorbar()
 
         filename = os.path.join(dirname, "chromagram.png")
-        print(filename)
-        plt.savefig(filename)
+
+        path_to_chromagram = pathlib.Path(__file__).parent.parent.absolute()
+
+        plt.savefig(os.path.join(path_to_chromagram, filename))
 
     def plot_histogram(self, frequencies):
         dirname = self.get_file_name_from_path()
@@ -136,8 +146,12 @@ class Composition:
         dict_values = list(map(lambda item: item[1], dict_items))
 
         plt.bar(dict_keys, dict_values)
-        res_file = os.path.join(dirname, "histogram.png")
-        plt.savefig(res_file)
+
+        path_to_histogram = pathlib.Path(__file__).parent.parent.absolute()
+        path_to_histogram = os.path.join(path_to_histogram, "generated", dirname)
+        print("INFO: path to histogram %s" % path_to_histogram)
+
+        plt.savefig(os.path.join(path_to_histogram, "histogram.png"))
 
     class CompositionEncoder(JSONEncoder):
         def default(self, o):

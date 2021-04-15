@@ -3,8 +3,6 @@ package tasks;
 import pojo.CompositionsResponse;
 import utils.PythonCaller;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class AnnTask extends BasePreprocessingTask {
@@ -14,16 +12,17 @@ public class AnnTask extends BasePreprocessingTask {
 
     @Override
     CompositionsResponse executeScriptWithResponse() throws Exception {
-        Path pathToModel = Paths.get("../scripts/resources/ann_model").toAbsolutePath();
+        String pathToScript = BasePreprocessingTask.getPathToScript("ann_process_compositions.py");
+        String pathToModel = BasePreprocessingTask.getPathToScript("resources/ann_model");
 
         StringBuilder args = new StringBuilder()
                 .append(chordDuration).append(" ")
                 .append(pathToModel).append(" ")
                 .append(String.join(" ", paths));
 
-        PythonCaller.executePythonScipt("../scripts/ann_process_compositions.py", args.toString());
+        PythonCaller.executePythonScipt(pathToScript, args.toString());
 
-        String pathToResponse = "answer_ann.json";
+        String pathToResponse = BasePreprocessingTask.getPathToAnswer("answer_ann.json");
 
         return parseJson(pathToResponse);
     }

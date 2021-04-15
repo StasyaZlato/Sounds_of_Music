@@ -14,9 +14,11 @@ public class TdaPreprocessingTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
+        String pathToScript = BasePreprocessingTask.getPathToScript("tda_process_composition.py");
+
         String args = String.join(" ", paths);
 
-        PythonCaller.executePythonScipt("../scripts/tda_process_composition.py", args);
+        PythonCaller.executePythonScipt(pathToScript, args);
 
         return null;
     }

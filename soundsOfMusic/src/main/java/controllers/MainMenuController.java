@@ -16,9 +16,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pojo.CompositionChord;
+import tasks.BasePreprocessingTask;
 import tasks.TdaPreprocessingTask;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -46,22 +49,41 @@ public class MainMenuController {
         scrollPaneEnableBtn.setMaxHeight(Double.MAX_VALUE);
 
         files.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            String selectedFile = files.getSelectionModel().getSelectedItem();
             int id = files.getSelectionModel().getSelectedIndex();
+            if (id < 0) {
+                return;
+            }
             String pathToComposition = ChooseFilesController.response.getById(id).getFilename();
-            Path folderPath = Path.of("generated_images", getFileNameWithoutExtension(pathToComposition));
+
+            String folderPath;
+
+            String classPath = "";
+            try {
+                 classPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation()
+                        .toURI()).getPath();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+            if (classPath.endsWith("jar")) {
+                folderPath = Path.of(Paths.get(classPath).getParent().toString(), "generated", getFileNameWithoutExtension(pathToComposition))
+                        .toAbsolutePath().toString();
+            } else {
+                folderPath = Path.of("../generated", getFileNameWithoutExtension(pathToComposition)).toAbsolutePath().toString();
+            }
+
             List<CompositionChord> data = ChooseFilesController.response.getById(id).getChords();
             switch (current) {
                 case 0:
                     GeneralStatisticsController.rows.clear();
                     GeneralStatisticsController.rows.addAll(data);
 
-                    Path histogramPath = Path.of(folderPath.toString(), "histogram.png").toAbsolutePath();
+                    Path histogramPath = Path.of(folderPath, "histogram.png").toAbsolutePath();
                     GeneralStatisticsController.pathToHistogram.set(histogramPath.toString());
                     break;
                 case 1:
-                    Path waveplotPath = Path.of(folderPath.toString(), "waveplot.png").toAbsolutePath();
-                    Path chromagramPath = Path.of(folderPath.toString(), "chromagram.png").toAbsolutePath();
+                    Path waveplotPath = Path.of(folderPath, "waveplot.png").toAbsolutePath();
+                    Path chromagramPath = Path.of(folderPath, "chromagram.png").toAbsolutePath();
 
                     GeneralGraphsController.pathToChromagram.set(chromagramPath.toString());
                     GeneralGraphsController.pathToWaveplot.set(waveplotPath.toString());
@@ -71,7 +93,7 @@ public class MainMenuController {
                     TonnetzResultsController.watcher.set(true);
                     break;
                 case 3:
-                    Path persistenceDiagramPath = Path.of(folderPath.toString(), "persistence_diagram.png").toAbsolutePath();
+                    Path persistenceDiagramPath = Path.of(folderPath, "persistence_diagram.png").toAbsolutePath();
                     TdaResultsControllers.pathToImage.set(persistenceDiagramPath.toString());
                     break;
             }
@@ -151,11 +173,7 @@ public class MainMenuController {
 
             Optional<ButtonType> option = alert.showAndWait();
 
-            if (option.isEmpty()) {
-                TdaResultsControllers.labelText.setValue("Анализ не был произведен");
-            } else if (option.get() == ButtonType.OK) {
-//                TdaResultsControllers.labelText.set("Выполняется анализ");
-
+            if (option.isPresent() && option.get() == ButtonType.OK) {
                 TdaPreprocessingTask task = new TdaPreprocessingTask(new ArrayList<>(loadedFiles));
 
                 FXMLLoader dialogLoader = new FXMLLoader(getClass().getResource("/fxml/loading_dialog.fxml"));
@@ -170,13 +188,12 @@ public class MainMenuController {
 
                 task.setOnSucceeded(event -> {
                     dialogStage.close();
-                    TdaResultsControllers.labelText.setValue("Выберите файл");
                 });
 
                 new Thread(task).start();
 
                 TdaResultsControllers.isFirst = false;
-            } else if (option.get() == ButtonType.CANCEL) {
+            } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
                 TdaResultsControllers.labelText.setValue("Анализ не был произведен");
             }
         }
