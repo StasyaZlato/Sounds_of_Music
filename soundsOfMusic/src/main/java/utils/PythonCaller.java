@@ -1,7 +1,11 @@
 package utils;
 
-import java.io.IOException;
+import tasks.BasePreprocessingTask;
+
+import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class PythonCaller {
@@ -27,22 +31,30 @@ public class PythonCaller {
         return process.waitFor();
     }
 
-    public static String getPythonExecutable() throws IOException, InterruptedException {
+    public static String getPythonExecutable() throws IOException, URISyntaxException {
+        String defaultPythonCommand = "python3";
+        Path pathToPythonExecutorTxt;
 
-        ProcessBuilder processBuilder = new ProcessBuilder("python3", "--version");
-        Process process = processBuilder.start();
+        String path = new File(PythonCaller.class.getProtectionDomain().getCodeSource().getLocation()
+                .toURI()).getPath();
 
-        if (process.waitFor() == 0) {
-            return "python3";
+        if (path.endsWith("jar")) {
+            pathToPythonExecutorTxt = Path.of(Paths.get(path).getParent().toString(), "python_executor.txt")
+                    .toAbsolutePath();
+        } else {
+            pathToPythonExecutorTxt = Paths.get("../python_executor.txt").toAbsolutePath();
         }
 
-        processBuilder = new ProcessBuilder("python", "--version");
-        process = processBuilder.start();
-
-        if (process.waitFor() == 0) {
-            return "python";
+        String pythonCommand = "";
+        if (Files.exists(pathToPythonExecutorTxt)) {
+            BufferedReader reader = new BufferedReader(new FileReader(pathToPythonExecutorTxt.toString()));
+            pythonCommand = reader.readLine().trim();
+            reader.close();
         }
 
-        return "none";
+        if (!pythonCommand.equals("python") && !pythonCommand.equals("python3")) {
+            pythonCommand = defaultPythonCommand;
+        }
+        return pythonCommand;
     }
 }

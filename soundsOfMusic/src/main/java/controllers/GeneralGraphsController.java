@@ -26,6 +26,7 @@ public class GeneralGraphsController {
             waveplotImageView.setVisible(true);
             descrWaveplot.setVisible(true);
             System.out.println("image set");
+            chooseFileOnTheLeftLbl.setManaged(false);
             chooseFileOnTheLeftLbl.setVisible(false);
         });
         pathToChromagram.addListener((obs, oldVal, newVal) -> {
