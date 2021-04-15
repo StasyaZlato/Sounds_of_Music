@@ -236,9 +236,11 @@ public class MainMenuController {
         if (scrollFiles.isManaged()) {
             GeneralGraphsController.maxWidth.set(500);
             GeneralStatisticsController.maxWidth.set(500);
+            TdaResultsControllers.maxWidth.set(500);
         } else {
             GeneralGraphsController.maxWidth.set(900);
             GeneralStatisticsController.maxWidth.set(900);
+            TdaResultsControllers.maxWidth.set(700);
         }
     }
 }
