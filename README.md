@@ -9,9 +9,9 @@
 Для запуска скриптов необходима команда, запускающая Python версии 3.7 и выше. В ситуации на Рисунке 1 это команда python3 – эта строка должна быть записана в python_executor.txt. Пример содержимого файла python_executor.txt:
  
 Также необходимо установить все необходимые Python-пакеты. Для этого в командной строке / терминале можно выполнить следующую команду (из корня архива):
->> pip install -r scripts/requirements.txt
+> pip install -r scripts/requirements.txt
 
 Также, как с командой python / python3, в зависимости от системы команда может начинаться с pip3.
 Запуск программы производится командой:
 
->> java -jar path/to/file/soundsOfMusic.jar
+> java -jar path/to/file/soundsOfMusic.jar
