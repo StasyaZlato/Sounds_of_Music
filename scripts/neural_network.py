@@ -142,7 +142,7 @@ def fit_model(model, criterion, optimizer, X_train, y_train, batch_size):
 
             running_loss += loss.item()
         else:
-            print(f"Training loss: {running_loss / len(X_batches)}")
+            print(f"[INFO] Training loss: {running_loss / len(X_batches)}")
 
         torch.save(model.state_dict(), "resources/ann_model")
 
@@ -158,7 +158,7 @@ def test_model(X_test, y_test):
     model = load_model("resources/ann_model")
 
     predicted_test = torch.argmax(model(X_test), dim=1)
-    print("accuracy test {}".format(accuracy_score(y_test, predicted_test)))
+    print("[INFO] Accuracy test {}".format(accuracy_score(y_test, predicted_test)))
 
 
 def predict_chords(X, path_to_model):

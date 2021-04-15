@@ -11,13 +11,13 @@ import java.nio.file.Paths;
 public class PythonCaller {
     public static int executePythonScipt(String scriptPath, String args) throws Exception {
         String pythonExecutable = getPythonExecutable();
-        System.out.println("python is: " + pythonExecutable);
+        System.out.println("[INFO] python command is: " + pythonExecutable);
         if (pythonExecutable.equals("none")) {
             throw new Exception("No python executable");
         }
 
         if (!Files.exists(Paths.get(scriptPath))) {
-            System.out.println("Error getting script");
+            System.out.println("[ERROR] Error getting script");
             return -1;
         }
 

@@ -23,7 +23,7 @@
                     onMouseClicked="#openNextTab"/>
             <Button styleClass="passive" fx:id="tonnetzTab" prefHeight="100" prefWidth="300" text="Диаграмма Tonnetz"
                     onMouseClicked="#openNextTab"/>
-            <Button styleClass="passive" fx:id="tdaTab" prefHeight="100" prefWidth="300" text="ТАД анализ"
+            <Button styleClass="passive" fx:id="tdaTab" prefHeight="100" prefWidth="300" text="Диаграмма устойчивости"
                     onMouseClicked="#openNextTab"/>
         </VBox>
     </left>

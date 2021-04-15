@@ -91,7 +91,6 @@ public class ChooseFilesController {
             task.setOnSucceeded(event -> {
                 dialogStage.close();
                 response = task.getValue();
-                System.out.println(response);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
                 try {
                     root = loader.load();
@@ -109,7 +108,7 @@ public class ChooseFilesController {
 
             new Thread(task).start();
         } catch (IOException e) {
-            System.err.printf("Error: %s%n", e.getMessage());
+            System.err.printf("[ERROR] %s%n", e.getMessage());
         }
     }
 

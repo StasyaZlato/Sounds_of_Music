@@ -35,9 +35,9 @@ class CompositionForTDA:
         try:
             pathlib.Path(path_to_diagram).mkdir(parents=True, exist_ok=True)
         except OSError:
-            print("Creation of the directory %s failed" % dirname)
+            print("[ERROR] Creation of the directory %s failed" % dirname)
         else:
-            print("Successfully created the directory %s " % dirname)
+            print("[INFO] Successfully created the directory %s " % dirname)
 
         filename = os.path.join(path_to_diagram, "persistence_diagram.png")
 
