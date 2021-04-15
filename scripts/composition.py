@@ -26,6 +26,9 @@ def get_frequency(collection, is_fourier):
         freq[el] += 1
         cnt += 1
 
+    if cnt == 0:
+        return {key: 0 for key, value in freq.items()}
+
     return {key: value / cnt for key, value in freq.items()}
 
 
