@@ -8,3 +8,4 @@ pydub~=0.25.1
 tqdm~=4.60.0
 giotto-tda~=0.4.0
 psutil~=5.8.0
+kaleido~=0.2.1
