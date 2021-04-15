@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -9,9 +10,11 @@ import java.io.File;
 
 public class TdaResultsControllers {
     public static boolean isFirst;
-    public static SimpleStringProperty labelText = new SimpleStringProperty("Анализ не был произведен.");
+    public static SimpleStringProperty labelText = new SimpleStringProperty();
 
     public static SimpleStringProperty pathToImage = new SimpleStringProperty();
+
+    public static SimpleDoubleProperty maxWidth = new SimpleDoubleProperty();
 
     public ImageView persistenceDiagramImage;
     public Label descrPersistenceDiagram;
@@ -25,6 +28,10 @@ public class TdaResultsControllers {
             descrPersistenceDiagram.setVisible(true);
             persistenceDiagramImage.setImage(new Image(new File(newVal).toURI().toString()));
             persistenceDiagramImage.setVisible(true);
+        });
+
+        maxWidth.addListener((obs, oldVal, newVal) -> {
+            persistenceDiagramImage.setFitWidth(newVal.doubleValue());
         });
     }
 }

@@ -18,13 +18,16 @@ public class GeneralGraphsController {
     public Label descrWaveplot;
     public Label descrChromagram;
     public VBox graphVB;
+    public Label chooseFileOnTheLeftLbl;
 
     public void initialize() {
         pathToWaveplot.addListener((obs, oldVal, newVal) -> {
             waveplotImageView.setImage(new Image(new File(newVal).toURI().toString()));
             waveplotImageView.setVisible(true);
             descrWaveplot.setVisible(true);
-            System.out.println("image set");
+            System.out.println("[INFO] graphs waveplot and chromagram set");
+            chooseFileOnTheLeftLbl.setManaged(false);
+            chooseFileOnTheLeftLbl.setVisible(false);
         });
         pathToChromagram.addListener((obs, oldVal, newVal) -> {
             chromagramImageView.setImage(new Image(new File(newVal).toURI().toString()));

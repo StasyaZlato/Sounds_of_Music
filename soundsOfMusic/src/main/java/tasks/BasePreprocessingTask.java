@@ -5,7 +5,10 @@ import javafx.concurrent.Task;
 import pojo.Composition;
 import pojo.CompositionsResponse;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -32,5 +35,37 @@ public abstract class BasePreprocessingTask extends Task<CompositionsResponse> {
         List<Composition> compositions = Arrays.asList(mapper.readValue(Paths.get(path).toFile(), Composition[].class));
 
         return new CompositionsResponse(compositions);
+    }
+
+    public static String getPathToScript(String scriptName) throws URISyntaxException {
+        String pathToScript;
+
+        String path = new File(BasePreprocessingTask.class.getProtectionDomain().getCodeSource().getLocation()
+                .toURI()).getPath();
+
+        if (path.endsWith("jar")) {
+            pathToScript = Path.of(Paths.get(path).getParent().toString(), "scripts/" + scriptName)
+                    .toAbsolutePath().toString();
+        } else {
+            pathToScript = Paths.get("../scripts/" + scriptName).toAbsolutePath().toString();
+        }
+
+        return pathToScript;
+    }
+
+    public static String getPathToAnswer(String answer) throws URISyntaxException {
+        String pathToAnswer;
+
+        String path = new File(BasePreprocessingTask.class.getProtectionDomain().getCodeSource().getLocation()
+                .toURI()).getPath();
+
+        if (path.endsWith("jar")) {
+            pathToAnswer = Path.of(Paths.get(path).getParent().toString(), "generated/" + answer)
+                    .toAbsolutePath().toString();
+        } else {
+            pathToAnswer = Paths.get("../generated/" + answer).toAbsolutePath().toString();
+        }
+
+        return pathToAnswer;
     }
 }

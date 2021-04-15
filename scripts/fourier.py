@@ -36,6 +36,8 @@ def are_adjacent_notes(first, second):
 
 
 def check_chord_valid(chord, note_to_add):
+    if len(note_to_add) > 2:
+        return False
     for note in chord:
         if are_adjacent_notes(note, note_to_add):
             return False
@@ -111,6 +113,8 @@ def determine_fifth(root, fifth):
 
 
 def determine_chord(notes):
+    if len(notes) != 3:
+        return 'error'
     notes.sort()
     # figure out root note
     # in case it's G
@@ -137,7 +141,6 @@ def split(path, chunk_duration_ms):
     for i, chunk in enumerate(chunks):
         chunk_name = "{0}.wav".format(i)
         chunk_names.append(chunk_name)
-        # print ("exporting", chunk_name)
         chunk.export(chunk_name, format="wav")
     return chunk_names
 

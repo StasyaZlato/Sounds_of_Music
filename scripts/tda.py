@@ -1,8 +1,9 @@
+import os
+import pathlib
+
+import librosa
 from gtda.homology import VietorisRipsPersistence
 from gtda.plotting import plot_diagram
-import librosa
-import os
-from pathlib import Path
 
 
 class CompositionForTDA:
@@ -16,7 +17,7 @@ class CompositionForTDA:
     def get_file_name_from_path(self):
         head, tail = os.path.split(self.filename)
         index = tail.index('.')
-        return os.path.join("generated_images", tail[:index])
+        return tail[:index]
 
     def load(self):
         return librosa.load(self.filename, sr=None)
@@ -27,13 +28,17 @@ class CompositionForTDA:
         fig = plot_diagram(diagrams[0])
 
         dirname = self.get_file_name_from_path()
-        try:
-            Path("generated_images/").mkdir(parents=True, exist_ok=True)
-            Path(dirname).mkdir(parents=True, exist_ok=True)
-        except OSError:
-            print("Creation of the directory %s failed" % dirname)
-        else:
-            print("Successfully created the directory %s " % dirname)
 
-        path_to_graph = os.path.join(dirname, "persistence_diagram.png")
-        fig.write_image(path_to_graph)
+        path_to_diagram = pathlib.Path(__file__).parent.parent.absolute()
+        path_to_diagram = os.path.join(path_to_diagram, "generated", dirname)
+
+        try:
+            pathlib.Path(path_to_diagram).mkdir(parents=True, exist_ok=True)
+        except OSError:
+            print("[ERROR] Creation of the directory %s failed" % dirname)
+        else:
+            print("[INFO] Successfully created the directory %s " % dirname)
+
+        filename = os.path.join(path_to_diagram, "persistence_diagram.png")
+
+        fig.write_image(filename)
