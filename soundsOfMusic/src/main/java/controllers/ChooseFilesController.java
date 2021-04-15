@@ -52,15 +52,17 @@ public class ChooseFilesController {
         fileChooser.getExtensionFilters().add(extFilter);
         List<File> chosenFile = fileChooser.showOpenMultipleDialog(((Node) actionEvent.getSource()).getScene().getWindow());
 
-        List<String> paths = chosenFile.stream().map(File::getAbsolutePath).collect(Collectors.toList());
+        if (chosenFile != null) {
+            List<String> paths = chosenFile.stream().map(File::getAbsolutePath).collect(Collectors.toList());
 
-        chosenFiles.clear();
+            chosenFiles.clear();
 
-        if (!chosenFile.isEmpty()) {
-            chosenFiles.addAll(paths);
+            if (!chosenFile.isEmpty()) {
+                chosenFiles.addAll(paths);
 
-            filesChosenLst.setItems(chosenFiles);
-            scrollFiles.setManaged(true);
+                filesChosenLst.setItems(chosenFiles);
+                scrollFiles.setManaged(true);
+            }
         }
     }
 
