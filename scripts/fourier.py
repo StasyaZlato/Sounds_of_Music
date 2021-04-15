@@ -141,7 +141,6 @@ def split(path, chunk_duration_ms):
     for i, chunk in enumerate(chunks):
         chunk_name = "{0}.wav".format(i)
         chunk_names.append(chunk_name)
-        # print ("exporting", chunk_name)
         chunk.export(chunk_name, format="wav")
     return chunk_names
 

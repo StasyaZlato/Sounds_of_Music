@@ -8,7 +8,6 @@ from processing_utils import get_json_answer_path
 
 def process_file(paths, chord_duration):
     compositions = []
-    print(paths)
     for path in paths:
         composition = Composition(path, chord_duration)
         composition.librosa_make_graphics()
@@ -16,7 +15,7 @@ def process_file(paths, chord_duration):
         compositions.append(composition)
 
     path_to_json = get_json_answer_path()
-    print(path_to_json)
+    print("[INFO] path to response json ", path_to_json)
 
     with open(os.path.join(path_to_json, "answer_fourier.json"), 'w', encoding='utf-8') as f:
         json.dump(compositions, f, ensure_ascii=False, indent=3, cls=Composition.CompositionEncoder)
@@ -24,7 +23,6 @@ def process_file(paths, chord_duration):
 
 def main():
     args = sys.argv[1].split()
-    print('args: ', args)
 
     chord_duration = float(args[0])
 

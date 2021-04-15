@@ -8,8 +8,8 @@ def get_json_answer_path():
     try:
         Path(path_to_json).mkdir(parents=True, exist_ok=True)
     except OSError:
-        print("Creation of the generated directory failed for ")
+        print("[ERROR] Creation of the generated directory failed for ")
     else:
-        print("Successfully created the \"generated\" directory for answer")
+        print("[INFO] Successfully created the \"generated\" directory for answer")
 
     return path_to_json

@@ -68,7 +68,6 @@ class Composition:
         chords_from_ann = neural_network.predict_chords(self.chords_features, path_to_model)
         dict_freq = get_frequency(chords_from_ann, False)
         self.plot_histogram(dict_freq)
-        print(dict_freq)
         self.chords = list(
             map(lambda x: CompositionChord(dict_freq[CHORDS_DICT_REVERSED[x.item()]], CHORDS_DICT_REVERSED[x.item()]),
                 chords_from_ann))
@@ -99,19 +98,18 @@ class Composition:
 
     def librosa_make_graphics(self):
         dirname = self.get_file_name_from_path()
-        print(dirname)
         path_to_graphs = pathlib.Path(__file__).parent.parent.absolute()
 
         path_to_graphs = os.path.join(path_to_graphs, "generated", dirname)
 
-        print("Path to graphs is %s" % path_to_graphs)
+        print("[INFO] Path to graphs is %s" % path_to_graphs)
 
         try:
             pathlib.Path(path_to_graphs).mkdir(parents=True, exist_ok=True)
         except OSError:
-            print("Creation of the directory %s failed" % dirname)
+            print("[ERROR] Creation of the directory %s failed" % dirname)
         else:
-            print("Successfully created the directory %s " % dirname)
+            print("[INFO] Successfully created the directory %s " % dirname)
 
         self.create_waveplot(path_to_graphs)
         self.create_chromagram(path_to_graphs)
@@ -121,7 +119,6 @@ class Composition:
         librosa.display.waveplot(self.y, sr=self.sr)
 
         filename = os.path.join(dirname, "waveplot.png")
-        print(filename)
 
         path_to_waveplot = pathlib.Path(__file__).parent.parent.absolute()
 

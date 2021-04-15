@@ -25,7 +25,7 @@ public class GeneralGraphsController {
             waveplotImageView.setImage(new Image(new File(newVal).toURI().toString()));
             waveplotImageView.setVisible(true);
             descrWaveplot.setVisible(true);
-            System.out.println("image set");
+            System.out.println("[INFO] graphs waveplot and chromagram set");
             chooseFileOnTheLeftLbl.setManaged(false);
             chooseFileOnTheLeftLbl.setVisible(false);
         });

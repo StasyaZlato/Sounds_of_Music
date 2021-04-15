@@ -14,7 +14,7 @@ public class FourierTask extends BasePreprocessingTask {
     @Override
     CompositionsResponse executeScriptWithResponse() throws Exception {
         String pathToScript = BasePreprocessingTask.getPathToScript("fourier_process_compositions.py");
-        System.out.println(pathToScript);
+        System.out.println("[INFO] path to script " + pathToScript);
 
         StringBuilder args = new StringBuilder()
                 .append(chordDuration).append(" ")
