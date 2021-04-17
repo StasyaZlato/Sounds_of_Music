@@ -142,7 +142,7 @@ class Composition:
         plt.figure(figsize=(14, 5))
 
         dict_items = frequencies.items()
-        dict_keys = list(map(lambda item: item[0], dict_items))
+        dict_keys = list(map(lambda item: item[0][0].upper() + item[0][1:], dict_items))
         dict_values = list(map(lambda item: item[1], dict_items))
 
         plt.bar(dict_keys, dict_values)
