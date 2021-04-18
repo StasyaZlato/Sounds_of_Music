@@ -49,11 +49,8 @@ public class GeneralStatisticsController {
             String firstCapitalized = Character.toString(chord.charAt(0)).toUpperCase();
             return new SimpleStringProperty(firstCapitalized + chord.substring(1));
         });
-        frequencyColumn.setCellValueFactory(c -> {
-            DecimalFormat twoDForm = new DecimalFormat("#.##");
-            double res = Double.parseDouble(twoDForm.format(c.getValue().frequency));
-            return new SimpleDoubleProperty(res);
-        });
+
+        frequencyColumn.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().frequency));
 
         frequencyTable.setItems(rows);
 

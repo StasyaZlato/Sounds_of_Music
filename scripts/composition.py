@@ -29,7 +29,7 @@ def get_frequency(collection, is_fourier):
     if cnt == 0:
         return {key: 0 for key, value in freq.items()}
 
-    return {key: value / cnt for key, value in freq.items()}
+    return {key: round(value / cnt, 2) for key, value in freq.items()}
 
 
 class Composition:
