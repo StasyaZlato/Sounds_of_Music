@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import pojo.CompositionChord;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 public class GeneralStatisticsController {
     public static ObservableList<CompositionChord> rows = FXCollections.observableArrayList();
@@ -43,8 +44,16 @@ public class GeneralStatisticsController {
         chordColumn.setResizable(false);
         frequencyColumn.setResizable(false);
 
-        chordColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().chord));
-        frequencyColumn.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().frequency));
+        chordColumn.setCellValueFactory(c -> {
+            String chord = c.getValue().chord;
+            String firstCapitalized = Character.toString(chord.charAt(0)).toUpperCase();
+            return new SimpleStringProperty(firstCapitalized + chord.substring(1));
+        });
+        frequencyColumn.setCellValueFactory(c -> {
+            DecimalFormat twoDForm = new DecimalFormat("#.##");
+            double res = Double.parseDouble(twoDForm.format(c.getValue().frequency));
+            return new SimpleDoubleProperty(res);
+        });
 
         frequencyTable.setItems(rows);
 
