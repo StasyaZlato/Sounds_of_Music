@@ -25,7 +25,7 @@
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            Waveplot (based on librosa load result)
+            Waveplot (based on librosa.load result)
         </Label>
         <ImageView fx:id="waveplotImageView"
                    fitWidth="500"
@@ -35,7 +35,7 @@
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            Chromagram (based of librosa STFT feature)
+            Chromagram (based on librosa chroma_stft feature)
         </Label>
         <ImageView fx:id="chromagramImageView"
                    fitWidth="500"
