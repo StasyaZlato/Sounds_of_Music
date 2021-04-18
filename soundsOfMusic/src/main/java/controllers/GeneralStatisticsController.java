@@ -51,7 +51,9 @@ public class GeneralStatisticsController {
         });
         frequencyColumn.setCellValueFactory(c -> {
             DecimalFormat twoDForm = new DecimalFormat("#.##");
-            double res = Double.parseDouble(twoDForm.format(c.getValue().frequency));
+            String formatted = twoDForm.format(c.getValue().frequency);
+            formatted = formatted.replace(',', '.');
+            double res = Double.parseDouble(formatted);
             return new SimpleDoubleProperty(res);
         });
 
